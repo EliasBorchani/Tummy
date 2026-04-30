@@ -1,0 +1,7 @@
+// Build settings de iosApp.
+// Toutes les valeurs critiques sont aussi dans project.yml pour que XcodeGen
+// les intègre directement au pbxproj. Cet xcconfig reste comme override
+// éventuel et pour des settings rares qu'on ne veut pas dans le YAML.
+
+// Pas de sandbox sur les Run Script (Gradle accède au FS hors $SRCROOT).
+ENABLE_USER_SCRIPT_SANDBOXING = NO

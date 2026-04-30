@@ -30,13 +30,14 @@ See [`docs/architecture.md`](./docs/architecture.md) for the rationale.
 ## Prerequisites
 
 - JDK 17
-- Android SDK (API 35) — path goes in `local.properties`:
+- Android SDK (API 37) — path goes in `local.properties`:
   ```
   sdk.dir=/Users/<you>/Library/Android/sdk
   ```
 - Xcode (full install) for iOS builds
+- Homebrew + `brew bundle install` (installs XcodeGen, declared in `Brewfile`)
 
-Gradle is bootstrapped by the wrapper — nothing to install globally.
+Gradle is bootstrapped by the wrapper — nothing more to install globally.
 
 ## Quick start
 
@@ -44,8 +45,8 @@ Gradle is bootstrapped by the wrapper — nothing to install globally.
 # Android
 ./gradlew :composeApp:assembleDebug
 
-# iOS framework (needed before opening iosApp.xcodeproj)
-./gradlew :umbrella:linkDebugFrameworkIosSimulatorArm64
+# iOS — generate the Xcode project (only after a fresh checkout or project.yml change)
+iosApp/regen.sh
 
 # Then open iosApp/iosApp.xcodeproj in Xcode and run.
 ```

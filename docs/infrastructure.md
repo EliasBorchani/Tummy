@@ -15,6 +15,7 @@ user's global `PATH`.
 | JDK        | 17       | Any JDK 17 available to Gradle (Homebrew, sdkman, Xcode)  |
 | Android SDK| API 37   | `~/Library/Android/sdk`, declared in `local.properties`   |
 | Xcode      | Full     | Required for iOS builds (Command Line Tools alone are not enough — no `iphonesimulator` SDK) |
+| XcodeGen   | latest   | `brew bundle install` (declared in repo-root `Brewfile`)  |
 
 `local.properties` (gitignored) holds the local SDK path:
 ```
@@ -191,6 +192,21 @@ Platform-specific database location:
 ./gradlew :umbrella:linkDebugFrameworkIosSimulatorArm64     # produce TummyShared.framework for simulator
 ./gradlew :umbrella:embedAndSignAppleFrameworkForXcode      # invoked automatically by Xcode Run Script
 ```
+
+### iOS Xcode project (generated)
+The Xcode project is **not committed** — it is generated from
+[`iosApp/project.yml`](../iosApp/project.yml) by XcodeGen. After cloning, or
+whenever `project.yml` changes:
+```
+brew bundle install      # one-time, installs xcodegen
+iosApp/regen.sh          # regenerates iosApp.xcodeproj
+```
+Adding a new Swift file is just dropping it under `iosApp/iosApp/` — XcodeGen
+picks it up on the next regeneration via the `sources: - path: iosApp` entry.
+
+Editing build settings, the Run Script Build Phase, the bundle ID, the
+deployment target, etc. is done in `project.yml`, never in the Xcode UI
+(changes there are wiped on next regen).
 
 ### Module-level sanity
 ```

@@ -38,6 +38,10 @@ DerivedData/
 Pods/
 Podfile.lock
 
+# iosApp.xcodeproj est généré par XcodeGen depuis project.yml
+# (lance `iosApp/regen.sh` pour le recréer après checkout)
+iosApp/iosApp.xcodeproj/
+
 # Swift Package Manager
 .swiftpm/
 .build/
