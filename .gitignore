@@ -1,0 +1,49 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# IntelliJ / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+.kotlin/
+out/
+
+# Local config
+local.properties
+*.hprof
+*.log
+
+# Kotlin / KSP
+.kotlin/
+**/kotlinBuildStatistics/
+
+# Android
+/captures
+.externalNativeBuild
+.cxx
+
+# macOS
+.DS_Store
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+DerivedData/
+Pods/
+Podfile.lock
+
+# Swift Package Manager
+.swiftpm/
+.build/
+
+# CocoaPods (si ajouté plus tard)
+iosApp/Pods/
+
+# MOKO
+**/generated/moko-resources/

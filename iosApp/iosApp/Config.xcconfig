@@ -1,0 +1,21 @@
+// Build settings de iosApp.
+// Centralisés ici pour sortir des trucs critiques du pbxproj
+// (moins de diffs Git pour les mêmes réglages).
+
+// Bundle + target
+PRODUCT_BUNDLE_IDENTIFIER = com.tummy.ios
+PRODUCT_NAME = iosApp
+IPHONEOS_DEPLOYMENT_TARGET = 18.0
+SWIFT_VERSION = 5.9
+
+// KMP : le Run Script Phase exécute `:umbrella:embedAndSignAppleFrameworkForXcode`
+// qui produit TummyShared.framework directement dans $(BUILT_PRODUCTS_DIR).
+// `$(inherited)` couvre déjà ce chemin — pas besoin d'ajouter
+// $(BUILT_PRODUCTS_DIR)/Frameworks (qui n'existe que pour des frameworks
+// dynamiques embarqués, et TummyShared est statique).
+OTHER_LDFLAGS = $(inherited) -framework TummyShared
+
+// Pas de sandbox sur les Run Script (Gradle accède au FS).
+ENABLE_USER_SCRIPT_SANDBOXING = NO
+
+ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES

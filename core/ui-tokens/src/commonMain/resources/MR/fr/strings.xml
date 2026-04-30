@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tummy</string>
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Annuler</string>
+    <string name="common_retry">Réessayer</string>
+
+    <string name="tab_meal">Repas</string>
+    <string name="tab_diary">Journal</string>
+    <string name="tab_settings">Réglages</string>
+
+    <string name="meal_empty_title">Aucun repas enregistré</string>
+    <string name="meal_empty_body">Appuyez sur + pour ajouter votre premier repas.</string>
+</resources>
