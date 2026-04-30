@@ -26,7 +26,13 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.tummy.ios
-        PRODUCT_NAME: iosApp
+        # Le binaire produit s'appelle Tummy.app. Le target Xcode lui-même
+        # reste `iosApp` (clé `targets:` du YAML), donc le scheme et le folder
+        # restent inchangés. Seul le binaire et CFBundleName sont impactés.
+        PRODUCT_NAME: Tummy
+        # CFBundleDisplayName (sous l'icône, app switcher, dialogues système).
+        # CFBundleName est auto-dérivé de PRODUCT_NAME, donc déjà "Tummy".
+        INFOPLIST_KEY_CFBundleDisplayName: Tummy
         # Info.plist auto-généré par Xcode (pas de fichier physique à maintenir).
         GENERATE_INFOPLIST_FILE: YES
         # Active une UILaunchScreen vide → iOS rend l'app plein écran sur tous
