@@ -9,12 +9,12 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import kotlin.apply
 
 /**
- * Convention de base pour tout module KMP library (AGP 9+).
+ * Base convention for any KMP library module (AGP 9+).
  *
- * AGP 9 introduit `com.android.kotlin.multiplatform.library` qui fusionne
- * `com.android.library` + `kotlin.multiplatform`. La config Android passe
- * désormais via `kotlin { android { ... } }` au lieu d'un bloc `android {}`
- * séparé.
+ * AGP 9 introduces `com.android.kotlin.multiplatform.library`, which merges
+ * `com.android.library` and `kotlin.multiplatform`. Android config now goes
+ * through `kotlin { android { ... } }` instead of a separate `android {}`
+ * block.
  */
 class KmpLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
@@ -48,7 +48,7 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
                 }
                 applyDefaultHierarchyTemplate()
 
-                // Room KMP us expect/actual classes
+                // Room KMP relies on expect/actual classes (silences the beta warning).
                 targets.configureEach {
                     compilations.configureEach {
                         compileTaskProvider.configure {

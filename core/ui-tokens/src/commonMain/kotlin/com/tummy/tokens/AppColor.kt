@@ -1,13 +1,13 @@
 package com.tummy.tokens
 
 /**
- * Couleur ARGB partagée. Chaque plateforme la convertit dans son type natif :
- * - Android / Compose : Color(argb.toInt())
- * - iOS / SwiftUI     : UIColor(red:, green:, blue:, alpha:) via extension Swift
+ * Shared ARGB color. Each platform converts to its native type:
+ * - Android / Compose: Color(argb.toInt())
+ * - iOS / SwiftUI:     UIColor(red:, green:, blue:, alpha:) via Swift extension
  *
- * Stockée en Long pour éviter la perte de signe. `data class` plutôt que `value
- * class` pour que Swift la voie comme un struct (les value classes Kotlin sont
- * effacées vers leur type sous-jacent dans l'interop ObjC/Swift).
+ * Stored as Long to avoid sign truncation. `data class` (not `value class`) so
+ * Swift sees it as a struct — Kotlin value classes are erased to their
+ * underlying type in ObjC/Swift interop.
  */
 data class AppColor(
     val argb: Long,

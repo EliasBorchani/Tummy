@@ -11,17 +11,17 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 /**
- * Base MVI multiplatform.
+ * Multiplatform MVI base.
  *
- * State  : reactive, dérivé d'upstream flows via `combine(...).stateIn(...)`.
- *          Pas de `updateState` reducer — l'état n'est jamais mutable depuis la VM.
- *          Pour les bouts impératifs (input texte, toggle UI), utiliser un
- *          `MutableStateFlow` privé qui flow dans le combine.
- * Intent : entrées utilisateur -> [onIntent].
- * Event  : actions one-shot (navigation, toast, haptic...).
+ * State  : reactive, derived from upstream flows via `combine(...).stateIn(...)`.
+ *          No `updateState` reducer — state is never mutable from the VM. For
+ *          imperative bits (text input, UI toggles), use a private
+ *          `MutableStateFlow` that flows into the combine.
+ * Intent : user input -> [onIntent].
+ * Event  : one-shot actions (navigation, toast, haptic...).
  *
- * Exposé via [state] (StateFlow) et [events] (SharedFlow) — SKIE les convertit
- * automatiquement en AsyncSequence côté Swift.
+ * Exposed via [state] (StateFlow) and [events] (SharedFlow) — SKIE auto-converts
+ * them to AsyncSequence on the Swift side.
  */
 abstract class BaseViewModel<State : Any, Intent : Any, Event : Any> : ViewModel() {
     abstract val state: StateFlow<State>

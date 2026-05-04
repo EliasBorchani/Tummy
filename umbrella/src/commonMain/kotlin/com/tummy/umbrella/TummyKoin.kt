@@ -18,12 +18,12 @@ import org.koin.dsl.module
 import org.koin.mp.KoinPlatform
 
 /**
- * Point d'entrée DI partagé. Appelé depuis composeApp (Android) et iosApp (Swift).
+ * Shared DI entry point. Called from composeApp (Android) and iosApp (Swift).
  *
- * Nommé `startTummyKoin` (pas `initTummyKoin`) pour éviter le conflit avec les
- * initializers Swift lors de l'interop SKIE.
+ * Named `startTummyKoin` (not `initTummyKoin`) to avoid conflicting with Swift
+ * initializers in SKIE interop.
  *
- * @param appDeclaration hook plateforme (androidContext, androidLogger, modules en plus…).
+ * @param appDeclaration platform hook (androidContext, androidLogger, extra modules...).
  */
 fun startTummyKoin(appDeclaration: KoinAppDeclaration = {}): KoinApplication = startKoin {
     appDeclaration()
@@ -47,8 +47,8 @@ private val networkModule = module {
 }
 
 /**
- * ViewModels côté "pur Koin" (factory). Pour Android, composeApp re-déclare
- * ces mêmes VM avec `viewModelOf(...)` pour le binding ViewModelStoreOwner.
+ * ViewModels as pure Koin factories. On Android, composeApp re-declares the
+ * same VMs with `viewModelOf(...)` to bind them to the ViewModelStoreOwner.
  */
 private val viewModelsModule = module {
     factory { HomeViewModel(get(), get(), get()) }
@@ -57,9 +57,9 @@ private val viewModelsModule = module {
 }
 
 /**
- * Façade DI typée pour Swift. Évite d'avoir à passer par
- * `KoinPlatformTools.defaultContext().get().get(objCClass: ...)` côté Swift :
- * chaque getter ici retourne un type concret, directement utilisable.
+ * Typed DI façade for Swift. Avoids the
+ * `KoinPlatformTools.defaultContext().get().get(objCClass: ...)` dance on the
+ * Swift side: each getter here returns a concrete type, directly usable.
  */
 object TummyDI {
     fun homeViewModel(): HomeViewModel = KoinPlatform.getKoin().get()

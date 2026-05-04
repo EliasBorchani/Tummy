@@ -9,8 +9,8 @@ data class AppTextStyle(
 )
 
 /**
- * Échelle typographique. Les `Font` (famille, ressources) sont résolus côté
- * plateforme — on ne partage que les rôles et les métriques.
+ * Type scale. Fonts (family, resources) are resolved per-platform — only roles
+ * and metrics are shared.
  */
 object AppTypography {
     val DisplayL = AppTextStyle(32f, 40f, FontWeight.Bold)

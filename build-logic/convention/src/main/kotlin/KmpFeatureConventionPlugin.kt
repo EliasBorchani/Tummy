@@ -5,10 +5,10 @@ import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 /**
- * Convention pour un module :features:<name>.
- * UI native 100% : pas de Compose dans le module, uniquement VM + state + intent + event.
- * - Applique le convention KMP de base
- * - Injecte lifecycle-viewmodel + koin-core en commonMain
+ * Convention for a :features:<name> module.
+ * 100% native UI: no Compose in the module, only VM + state + intent + event.
+ * - Applies the base KMP convention
+ * - Adds lifecycle-viewmodel + koin-core to commonMain
  */
 class KmpFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {

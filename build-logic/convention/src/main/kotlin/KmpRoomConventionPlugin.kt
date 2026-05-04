@@ -8,11 +8,11 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import kotlin.apply
 
 /**
- * Convention Room KMP :
- * - KSP2 sur android + 3 targets iOS
- * - sqlite-bundled injecté en commonMain (BundledSQLiteDriver)
- * - schemaDirectory local pour suivre les migrations
- * À appliquer en complément de tummy.kmp.library.
+ * Room KMP convention:
+ * - KSP2 on android + the 3 iOS targets
+ * - sqlite-bundled injected into commonMain (BundledSQLiteDriver)
+ * - local schemaDirectory so migrations are tracked
+ * Apply alongside tummy.kmp.library.
  */
 class KmpRoomConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {

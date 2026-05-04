@@ -7,10 +7,10 @@ import org.gradle.kotlin.dsl.configure
 import kotlin.apply
 
 /**
- * Convention pour :composeApp — app Android pure (pas KMP).
- * En AGP 9+, `com.android.application` intègre nativement la compilation Kotlin ;
- * applique `org.jetbrains.kotlin.android` en complément pour bénéficier de la DSL.
- * Pas de `kotlin.multiplatform` sinon conflit d'extension.
+ * Convention for :composeApp — pure Android app (not KMP).
+ * In AGP 9+, `com.android.application` natively integrates Kotlin compilation;
+ * we additionally apply `org.jetbrains.kotlin.plugin.compose` for the Compose DSL.
+ * No `kotlin.multiplatform` plugin here — would conflict with the extension setup.
  */
 class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {

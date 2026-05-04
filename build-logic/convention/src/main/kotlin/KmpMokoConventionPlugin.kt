@@ -8,10 +8,10 @@ import kotlin.apply
 import kotlin.text.set
 
 /**
- * Convention MOKO Resources :
- * - resourcesPackage nommé depuis le module
+ * MOKO Resources convention:
+ * - resourcesPackage = "com.tummy.tokens.resources"
  * - resourcesClassName = "MR"
- * - resources-core en commonMain (pas resources-compose : UI native 100%)
+ * - base `resources` (not `resources-compose`, since the UI is 100% native)
  */
 class KmpMokoConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {

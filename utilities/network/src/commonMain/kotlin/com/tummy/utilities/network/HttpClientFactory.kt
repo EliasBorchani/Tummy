@@ -19,9 +19,6 @@ data class NetworkConfig(
     val enableLogging: Boolean = true,
 )
 
-/**
- * Expected: chaque plateforme fournit son HttpClientEngine (OkHttp / Darwin).
- */
 expect fun httpClientEngine(): HttpClientEngine
 
 fun createHttpClient(

@@ -96,7 +96,7 @@ moko-resources-compose = { module = "dev.icerock.moko:resources-compose", versio
 # Logging
 napier = { module = "io.github.aakira:napier", version.ref = "napier" }
 
-# Classpaths pour build-logic
+# Classpaths for build-logic
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 android-gradle-plugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 compose-gradle-plugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
@@ -121,7 +121,7 @@ skie                  = { id = "co.touchlab.skie", version.ref = "skie" }
 moko-resources        = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko" }
 spotless              = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
-# Convention plugins (résolus via build-logic)
+# Convention plugins (resolved via build-logic)
 tummy-kmp-library     = { id = "tummy.kmp.library" }
 tummy-kmp-feature     = { id = "tummy.kmp.feature" }
 tummy-kmp-room        = { id = "tummy.kmp.room" }

@@ -46,7 +46,7 @@ kotlin {
             api(projects.features.log)
             api(libs.kotlinx.datetime)
 
-            // Implémentations injectées dans Koin
+            // Implementations wired into Koin
             implementation(projects.domain.ingredients.data)
             implementation(projects.domain.symptoms.data)
             implementation(projects.utilities.network)

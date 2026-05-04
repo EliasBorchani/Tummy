@@ -1,8 +1,8 @@
 package com.tummy.tokens
 
 /**
- * Dimension en dp/pt (conceptuellement identique sur les 2 plateformes).
- * `data class` pour exposition Swift (cf. AppColor).
+ * Dimension in dp/pt (conceptually identical on both platforms).
+ * `data class` for Swift interop — see AppColor.
  */
 data class AppDp(
     val value: Float,

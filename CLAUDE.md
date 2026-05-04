@@ -90,6 +90,8 @@ support it). Full command list in
   XcodeGen from `iosApp/project.yml`. Edit the YAML and run `iosApp/regen.sh`.
 - Keep `:api` modules pure: no Koin, no Room, no Ktor — just Kotlin and
   `kotlinx.*`.
+- All code-adjacent text is **English-only**: comments, KDoc, identifiers,
+  build-file comments (`*.kts`, `*.toml`, `*.yml`), commit messages.
 
 For *why* each rule exists and full pitfall list, see
 [kmp-gotchas.md](./docs/kmp-gotchas.md).

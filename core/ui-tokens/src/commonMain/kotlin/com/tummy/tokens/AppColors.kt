@@ -1,9 +1,8 @@
 package com.tummy.tokens
 
 /**
- * Palette sémantique Tummy. Les noms sont volontairement sémantiques (role-based)
- * et non descriptifs — pas de "Orange500", mais "Primary", "Surface", etc.
- * Ça évite les reskins douloureux.
+ * Role-based palette ("Primary"/"Surface", not "Orange500") so that re-skins
+ * don't cascade through every call site.
  */
 object AppColors {
     val Primary = AppColor(0xFFFF7043)
