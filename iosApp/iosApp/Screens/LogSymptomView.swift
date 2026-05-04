@@ -39,7 +39,7 @@ struct LogSymptomView: View {
         List {
             ForEach(allSymptoms, id: \.self) { symptom in
                 Toggle(
-                    "\(symptom.name)",
+                    symptom.localizedName,
                     isOn: Binding(
                         get: { obs.state.activeSymptoms.contains(symptom) },
                         set: { _ in obs.vm.onIntent(intent: LogSymptomIntentToggle(symptom: symptom)) }
@@ -47,11 +47,13 @@ struct LogSymptomView: View {
                 )
             }
         }
-        .navigationTitle("Symptoms")
+        .navigationTitle(MR.strings.shared.log_symptom_title.localized())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Done") { obs.vm.onIntent(intent: LogSymptomIntentDone()) }
+                Button(MR.strings.shared.log_symptom_done.localized()) {
+                    obs.vm.onIntent(intent: LogSymptomIntentDone())
+                }
             }
         }
         .onReceive(obs.events) { event in

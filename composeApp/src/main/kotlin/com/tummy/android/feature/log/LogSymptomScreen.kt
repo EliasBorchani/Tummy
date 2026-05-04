@@ -20,12 +20,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tummy.android.resources.label
 import com.tummy.domain.symptoms.model.Symptom
 import com.tummy.features.log.symptom.LogSymptomEvent
 import com.tummy.features.log.symptom.LogSymptomIntent
 import com.tummy.features.log.symptom.LogSymptomViewModel
+import com.tummy.tokens.resources.MR
 import kotlinx.datetime.LocalDate
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -51,13 +54,13 @@ fun LogSymptomScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Symptoms") },
+                title = { Text(stringResource(MR.strings.log_symptom_title.resourceId)) },
                 navigationIcon = {
                     IconButton(onClick = onClose) { Text("<") }
                 },
                 actions = {
                     TextButton(onClick = { vm.onIntent(LogSymptomIntent.Done) }) {
-                        Text("Done")
+                        Text(stringResource(MR.strings.log_symptom_done.resourceId))
                     }
                 },
             )
@@ -71,7 +74,7 @@ fun LogSymptomScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        Text(text = symptom.name)
+                        Text(text = stringResource(symptom.label().resourceId))
                         Switch(
                             checked = symptom in state.activeSymptoms,
                             onCheckedChange = {

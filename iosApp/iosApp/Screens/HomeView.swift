@@ -50,7 +50,7 @@ struct HomeView: View {
                 }
             )
         }
-        .navigationTitle("Tummy")
+        .navigationTitle(MR.strings.shared.app_name.localized())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -59,14 +59,14 @@ struct HomeView: View {
                 }
             }
         }
-        .confirmationDialog("Add", isPresented: $showActionSheet, titleVisibility: .hidden) {
-            Button("Add ingredient") {
+        .confirmationDialog("", isPresented: $showActionSheet, titleVisibility: .hidden) {
+            Button(MR.strings.shared.home_add_ingredient.localized()) {
                 obs.vm.onIntent(intent: HomeIntentAddIngredient())
             }
-            Button("Add symptom") {
+            Button(MR.strings.shared.home_add_symptom.localized()) {
                 obs.vm.onIntent(intent: HomeIntentAddSymptom())
             }
-            Button("Cancel", role: .cancel) {}
+            Button(MR.strings.shared.common_cancel.localized(), role: .cancel) {}
         }
         .onReceive(obs.events) { event in
             handleEvent(event)
@@ -120,7 +120,7 @@ private struct DayContent: View {
         if isEmpty {
             VStack {
                 Spacer()
-                Text("Nothing logged for this day. Tap + to start.")
+                Text(MR.strings.shared.home_empty_day.localized())
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
                     .padding()
@@ -130,14 +130,14 @@ private struct DayContent: View {
             List {
                 if state.daysLoggedTotal > 0 && state.daysLoggedTotal < SuspectScoreComputer.shared.MIN_DAYS_FOR_SCORING {
                     Section {
-                        Text("\(daysRemaining) more days of logging to start seeing patterns.")
+                        Text(String(format: MR.strings.shared.home_more_days_hint.localized(), daysRemaining))
                             .font(.footnote)
                             .foregroundStyle(.secondary)
                     }
                 }
 
                 if !state.ingredients.isEmpty {
-                    Section("Ingredients") {
+                    Section(MR.strings.shared.home_section_ingredients.localized()) {
                         ForEach(state.ingredients, id: \.displayName) { entry in
                             IngredientRow(entry: entry, onDelete: { onDeleteIngredient(entry) })
                         }
@@ -145,7 +145,7 @@ private struct DayContent: View {
                 }
 
                 if !state.symptoms.isEmpty {
-                    Section("Symptoms") {
+                    Section(MR.strings.shared.home_section_symptoms.localized()) {
                         ForEach(Array(state.symptoms), id: \.self) { symptom in
                             SymptomRow(symptom: symptom, onDelete: { onDeleteSymptom(symptom) })
                         }
@@ -177,7 +177,7 @@ private struct SymptomRow: View {
     let onDelete: () -> Void
 
     var body: some View {
-        HStack { Text("\(symptom.name)") }
+        HStack { Text(symptom.localizedName) }
             .swipeActions {
                 Button(role: .destructive, action: onDelete) { Image(systemName: "trash") }
             }

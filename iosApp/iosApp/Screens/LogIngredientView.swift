@@ -38,7 +38,7 @@ struct LogIngredientView: View {
     var body: some View {
         VStack(spacing: 0) {
             TextField(
-                "Search or type a custom ingredient",
+                MR.strings.shared.log_ingredient_search_hint.localized(),
                 text: Binding(
                     get: { obs.state.query },
                     set: { obs.vm.onIntent(intent: LogIngredientIntentQueryChanged(text: $0)) }
@@ -58,13 +58,13 @@ struct LogIngredientView: View {
 
                 if !obs.state.query.isEmpty && !obs.state.isSearching && !hasExactMatch {
                     Button(action: { obs.vm.onIntent(intent: LogIngredientIntentSaveAsCustom()) }) {
-                        Text("Add \"\(obs.state.query.trimmingCharacters(in: .whitespaces))\"")
+                        Text(String(format: MR.strings.shared.log_ingredient_save_as_new.localized(), obs.state.query.trimmingCharacters(in: .whitespaces)))
                             .foregroundStyle(.primary)
                     }
                 }
             }
         }
-        .navigationTitle("Add ingredient")
+        .navigationTitle(MR.strings.shared.log_ingredient_title.localized())
         .navigationBarTitleDisplayMode(.inline)
         .onReceive(obs.events) { event in
             switch onEnum(of: event) {

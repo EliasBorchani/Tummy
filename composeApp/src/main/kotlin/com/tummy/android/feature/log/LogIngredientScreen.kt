@@ -19,11 +19,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tummy.features.log.ingredient.LogIngredientEvent
 import com.tummy.features.log.ingredient.LogIngredientIntent
 import com.tummy.features.log.ingredient.LogIngredientViewModel
+import com.tummy.tokens.resources.MR
 import kotlinx.datetime.LocalDate
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
@@ -49,7 +51,7 @@ fun LogIngredientScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Add ingredient") },
+                title = { Text(stringResource(MR.strings.log_ingredient_title.resourceId)) },
                 navigationIcon = {
                     IconButton(onClick = onClose) { Text("<") }
                 },
@@ -62,7 +64,7 @@ fun LogIngredientScreen(
             OutlinedTextField(
                 value = state.query,
                 onValueChange = { vm.onIntent(LogIngredientIntent.QueryChanged(it)) },
-                placeholder = { Text("Search or type a custom ingredient") },
+                placeholder = { Text(stringResource(MR.strings.log_ingredient_search_hint.resourceId)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
             )
@@ -80,13 +82,16 @@ fun LogIngredientScreen(
                 }
 
                 if (state.query.isNotBlank() && !state.isSearching) {
+                    val trimmed = state.query.trim()
                     val exactMatch = state.suggestions.any {
-                        it.displayName.equals(state.query.trim(), ignoreCase = true)
+                        it.displayName.equals(trimmed, ignoreCase = true)
                     }
                     if (!exactMatch) {
                         item {
                             ListItem(
-                                headlineContent = { Text("Add \"${state.query.trim()}\"") },
+                                headlineContent = {
+                                    Text(stringResource(MR.strings.log_ingredient_save_as_new.resourceId, trimmed))
+                                },
                                 modifier = Modifier.clickable {
                                     vm.onIntent(LogIngredientIntent.SaveAsCustom)
                                 },

@@ -35,9 +35,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tummy.android.resources.label
 import com.tummy.domain.symptoms.model.Symptom
 import com.tummy.features.home.DotColor
 import com.tummy.features.home.HomeEvent
@@ -45,6 +47,7 @@ import com.tummy.features.home.HomeIntent
 import com.tummy.features.home.HomeViewModel
 import com.tummy.features.home.IngredientWithDot
 import com.tummy.features.home.SuspectScoreComputer
+import com.tummy.tokens.resources.MR
 import kotlinx.datetime.LocalDate
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -111,14 +114,14 @@ fun HomeScreen(
             sheetState = sheetState,
         ) {
             ListItem(
-                headlineContent = { Text("Add ingredient") },
+                headlineContent = { Text(stringResource(MR.strings.home_add_ingredient.resourceId)) },
                 modifier = Modifier.clickable {
                     showSheet = false
                     vm.onIntent(HomeIntent.AddIngredient)
                 },
             )
             ListItem(
-                headlineContent = { Text("Add symptom") },
+                headlineContent = { Text(stringResource(MR.strings.home_add_symptom.resourceId)) },
                 modifier = Modifier.clickable {
                     showSheet = false
                     vm.onIntent(HomeIntent.AddSymptom)
@@ -145,7 +148,7 @@ private fun DayContent(
         if (isEmpty) {
             item {
                 Text(
-                    text = "Nothing logged for this day. Tap + to start.",
+                    text = stringResource(MR.strings.home_empty_day.resourceId),
                     modifier = Modifier.padding(vertical = 32.dp),
                 )
             }
@@ -154,7 +157,7 @@ private fun DayContent(
         if (daysLoggedTotal in 1 until SuspectScoreComputer.MIN_DAYS_FOR_SCORING) {
             item {
                 Text(
-                    text = "$daysRemaining more days of logging to start seeing patterns.",
+                    text = stringResource(MR.strings.home_more_days_hint.resourceId, daysRemaining),
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(vertical = 8.dp),
                 )
@@ -164,7 +167,7 @@ private fun DayContent(
 
         if (ingredients.isNotEmpty()) {
             item {
-                SectionHeader(text = "Ingredients")
+                SectionHeader(text = stringResource(MR.strings.home_section_ingredients.resourceId))
             }
             items(ingredients, key = { it.ingredient.toString() }) { entry ->
                 IngredientRow(
@@ -176,7 +179,7 @@ private fun DayContent(
 
         if (symptoms.isNotEmpty()) {
             item {
-                SectionHeader(text = "Symptoms")
+                SectionHeader(text = stringResource(MR.strings.home_section_symptoms.resourceId))
             }
             items(symptoms.toList(), key = { it.name }) { symptom ->
                 SymptomRow(
@@ -225,7 +228,7 @@ private fun SymptomRow(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Text(text = symptom.name, modifier = Modifier.weight(1f))
+        Text(text = stringResource(symptom.label().resourceId), modifier = Modifier.weight(1f))
         IconButton(onClick = onDelete) { Text("✕") }
     }
 }
