@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tummy</string>
+    <string name="common_ok">OK</string>
+    <string name="common_cancel">Cancel</string>
+    <string name="common_retry">Retry</string>
+
+    <string name="tab_meal">Meals</string>
+    <string name="tab_diary">Diary</string>
+    <string name="tab_settings">Settings</string>
+
+    <string name="meal_empty_title">No meals yet</string>
+    <string name="meal_empty_body">Tap + to log your first meal.</string>
+
+    <string name="ingredient_dairy">Dairy</string>
+    <string name="ingredient_wheat">Wheat</string>
+    <string name="ingredient_gluten">Gluten</string>
+    <string name="ingredient_soy">Soy</string>
+    <string name="ingredient_eggs">Eggs</string>
+    <string name="ingredient_peanuts">Peanuts</string>
+    <string name="ingredient_tree_nuts">Tree nuts</string>
+    <string name="ingredient_shellfish">Shellfish</string>
+
+    <string name="symptom_bloating">Bloating</string>
+    <string name="symptom_abdominal_pain">Abdominal pain</string>
+    <string name="symptom_gas">Gas</string>
+    <string name="symptom_diarrhea">Diarrhea</string>
+    <string name="symptom_constipation">Constipation</string>
+    <string name="symptom_nausea">Nausea</string>
+
+    <string name="home_empty_day">Nothing logged for this day. Tap + to start.</string>
+    <string name="home_more_days_hint">%d more days of logging to start seeing patterns.</string>
+    <string name="home_section_ingredients">Ingredients</string>
+    <string name="home_section_symptoms">Symptoms</string>
+    <string name="home_add_ingredient">Add ingredient</string>
+    <string name="home_add_symptom">Add symptom</string>
+
+    <string name="log_ingredient_title">Add ingredient</string>
+    <string name="log_ingredient_search_hint">Search or type a custom ingredient</string>
+    <string name="log_ingredient_save_as_new">Add "%s"</string>
+
+    <string name="log_symptom_title">Symptoms</string>
+    <string name="log_symptom_done">Done</string>
+</resources>

@@ -1,45 +1,39 @@
 package com.tummy.features.meal
 
+import androidx.lifecycle.viewModelScope
 import com.tummy.domain.meal.model.Meal
 import com.tummy.domain.meal.model.MealId
 import com.tummy.domain.meal.usecase.LogMealUseCase
 import com.tummy.domain.meal.usecase.ObserveMealsUseCase
 import com.tummy.utilities.presentation.BaseViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlin.time.Clock
 import kotlin.random.Random
+import kotlin.time.Clock
 
 class MealViewModel(
     private val observeMeals: ObserveMealsUseCase,
     private val logMeal: LogMealUseCase,
-) : BaseViewModel<MealState, MealIntent, MealEvent>(MealState()) {
+) : BaseViewModel<MealState, MealIntent, MealEvent>() {
 
-    init { onIntent(MealIntent.Load) }
+    override val state: StateFlow<MealState> = observeMeals()
+        .map { meals -> MealState(isLoading = false, meals = meals) }
+        .catch { e -> emit(MealState(isLoading = false, error = e.message)) }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = MealState(isLoading = true),
+        )
 
     override fun onIntent(intent: MealIntent) {
         when (intent) {
-            MealIntent.Load -> load()
-            MealIntent.Refresh -> load()
+            MealIntent.Load, MealIntent.Refresh -> Unit
             is MealIntent.Select -> emitEvent(MealEvent.NavigateToDetail(intent.id))
             is MealIntent.LogQuick -> quickLog(intent.name, intent.calories)
-        }
-    }
-
-    private fun load() {
-        updateState { it.copy(isLoading = true, error = null) }
-        scope.launch {
-            observeMeals()
-                .catch { e ->
-                    updateState { it.copy(isLoading = false, error = e.message) }
-                    emitEvent(MealEvent.ShowError(e.message ?: "Unknown error"))
-                }
-                .onEach { meals ->
-                    updateState { it.copy(isLoading = false, meals = meals) }
-                }
-                .collect()
         }
     }
 
@@ -55,5 +49,4 @@ class MealViewModel(
                 .onFailure { emitEvent(MealEvent.ShowError(it.message ?: "Failed to log")) }
         }
     }
-
 }

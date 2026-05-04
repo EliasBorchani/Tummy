@@ -20,10 +20,16 @@ dependencies {
     implementation(projects.domain.user.data)
     implementation(projects.domain.nutrition.api)
     implementation(projects.domain.nutrition.data)
+    implementation(projects.domain.ingredients.api)
+    implementation(projects.domain.ingredients.data)
+    implementation(projects.domain.symptoms.api)
+    implementation(projects.domain.symptoms.data)
 
     implementation(projects.features.meal)
     implementation(projects.features.diary)
     implementation(projects.features.settings)
+    implementation(projects.features.home)
+    implementation(projects.features.log)
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.runtime)
@@ -37,6 +43,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.kotlinx.datetime)
 
     implementation(libs.koin.android)
     implementation(libs.koin.compose)

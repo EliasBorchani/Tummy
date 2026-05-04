@@ -49,5 +49,26 @@ targets:
       - name: Build Kotlin framework
         basedOnDependencyAnalysis: false      # toujours run, sinon Xcode skip parfois
         script: |
+          set -e
           cd "$SRCROOT/.."
           ./gradlew :umbrella:embedAndSignAppleFrameworkForXcode
+
+          # MOKO resources : la framework statique n'embarque pas automatiquement
+          # le bundle MOKO. On le copie depuis le klib de :core:ui-tokens vers
+          # le .app, où NSBundle(identifier:) le trouvera via CFBundleIdentifier.
+          if [ "$PLATFORM_NAME" = "iphonesimulator" ]; then
+            if [ "$ARCHS" = "arm64" ]; then MOKO_TARGET="iosSimulatorArm64"
+            else MOKO_TARGET="iosX64"; fi
+          else
+            MOKO_TARGET="iosArm64"
+          fi
+          MOKO_SRC="$SRCROOT/../core/ui-tokens/build/classes/kotlin/$MOKO_TARGET/main/klib/ui-tokens/default/resources"
+          MOKO_DST="$BUILT_PRODUCTS_DIR/$CONTENTS_FOLDER_PATH"
+          if [ -d "$MOKO_SRC" ]; then
+            for bundle in "$MOKO_SRC"/*.bundle; do
+              [ -d "$bundle" ] || continue
+              name=$(basename "$bundle" | tr ':' '_')
+              rm -rf "$MOKO_DST/$name"
+              cp -R "$bundle" "$MOKO_DST/$name"
+            done
+          fi

@@ -1,17 +1,24 @@
 package com.tummy.umbrella
 
+import com.tummy.data.ingredients.di.ingredientsModule
 import com.tummy.data.meal.di.mealModule
 import com.tummy.data.nutrition.di.nutritionModule
+import com.tummy.data.symptoms.di.symptomsModule
 import com.tummy.data.user.di.userModule
 import com.tummy.features.diary.DiaryViewModel
+import com.tummy.features.home.HomeViewModel
+import com.tummy.features.log.ingredient.LogIngredientViewModel
+import com.tummy.features.log.symptom.LogSymptomViewModel
 import com.tummy.features.meal.MealViewModel
 import com.tummy.features.settings.SettingsViewModel
 import com.tummy.utilities.network.NetworkConfig
 import com.tummy.utilities.network.createHttpClient
 import io.ktor.client.HttpClient
+import kotlinx.datetime.LocalDate
 import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
+import org.koin.core.parameter.parametersOf
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 import org.koin.mp.KoinPlatform
@@ -31,8 +38,11 @@ fun startTummyKoin(appDeclaration: KoinAppDeclaration = {}): KoinApplication = s
         mealModule,
         userModule,
         nutritionModule,
+        ingredientsModule,
+        symptomsModule,
         viewModelsModule,
     )
+    modules(platformModules)
 }
 
 fun stopTummyKoin() = stopKoin()
@@ -53,6 +63,10 @@ private val viewModelsModule = module {
     factory { MealViewModel(get(), get()) }
     factory { DiaryViewModel(get(), get()) }
     factory { SettingsViewModel(get()) }
+
+    factory { HomeViewModel(get(), get(), get()) }
+    factory { params -> LogIngredientViewModel(params.get(), get(), get()) }
+    factory { params -> LogSymptomViewModel(params.get(), get()) }
 }
 
 /**
@@ -64,4 +78,12 @@ object TummyDI {
     fun mealViewModel(): MealViewModel = KoinPlatform.getKoin().get()
     fun diaryViewModel(): DiaryViewModel = KoinPlatform.getKoin().get()
     fun settingsViewModel(): SettingsViewModel = KoinPlatform.getKoin().get()
+
+    fun homeViewModel(): HomeViewModel = KoinPlatform.getKoin().get()
+
+    fun logIngredientViewModel(date: LocalDate): LogIngredientViewModel =
+        KoinPlatform.getKoin().get { parametersOf(date) }
+
+    fun logSymptomViewModel(date: LocalDate): LogSymptomViewModel =
+        KoinPlatform.getKoin().get { parametersOf(date) }
 }

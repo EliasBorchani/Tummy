@@ -6,7 +6,7 @@ struct RootView: View {
 
     var body: some View {
         NavigationStack(path: $path) {
-            DiaryView(onOpenMeals: { path.append(Route.meal) })
+            HomeView(onNavigate: { route in path.append(route) })
                 .navigationDestination(for: Route.self) { route in
                     switch route {
                     case .meal:
@@ -15,11 +15,10 @@ struct RootView: View {
                         Text("Meal detail: \(id)")
                     case .settings:
                         SettingsView()
-                    }
-                }
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Settings") { path.append(Route.settings) }
+                    case .logIngredient(let date):
+                        LogIngredientView(date: date, onClose: { path.removeLast() })
+                    case .logSymptom(let date):
+                        LogSymptomView(date: date, onClose: { path.removeLast() })
                     }
                 }
         }
