@@ -26,7 +26,6 @@ sealed interface SuspectScoreResult {
 }
 
 object SuspectScoreComputer {
-
     const val MIN_DAYS_FOR_SCORING: Int = 7
     const val MIN_DAYS_PER_INGREDIENT: Int = 3
     private const val SAME_DAY_WEIGHT: Double = 1.0
@@ -45,10 +44,11 @@ object SuspectScoreComputer {
             )
         }
 
-        val daysAte = ingredientLogs
-            .filter { it.ingredient == ingredient }
-            .map { it.date }
-            .toSet()
+        val daysAte =
+            ingredientLogs
+                .filter { it.ingredient == ingredient }
+                .map { it.date }
+                .toSet()
         val daysDidntEat = loggedDates - daysAte
 
         if (daysAte.size < MIN_DAYS_PER_INGREDIENT ||

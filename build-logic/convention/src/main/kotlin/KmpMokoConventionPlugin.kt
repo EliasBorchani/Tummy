@@ -4,6 +4,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import kotlin.apply
+import kotlin.text.set
 
 /**
  * Convention MOKO Resources :
@@ -12,17 +14,19 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
  * - resources-core en commonMain (pas resources-compose : UI native 100%)
  */
 class KmpMokoConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with(target) {
-        pluginManager.apply("dev.icerock.mobile.multiplatform-resources")
+    override fun apply(target: Project) {
+        with(target) {
+            pluginManager.apply("dev.icerock.mobile.multiplatform-resources")
 
-        extensions.configure<MultiplatformResourcesPluginExtension> {
-            resourcesPackage.set("com.tummy.tokens.resources")
-            resourcesClassName.set("MR")
-        }
+            extensions.configure<MultiplatformResourcesPluginExtension> {
+                resourcesPackage.set("com.tummy.tokens.resources")
+                resourcesClassName.set("MR")
+            }
 
-        extensions.configure<KotlinMultiplatformExtension> {
-            sourceSets.commonMain.dependencies {
-                api(libs.findLibrary("moko-resources").get())
+            extensions.configure<KotlinMultiplatformExtension> {
+                sourceSets.commonMain.dependencies {
+                    api(libs.findLibrary("moko-resources").get())
+                }
             }
         }
     }

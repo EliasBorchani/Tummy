@@ -10,25 +10,26 @@ import com.tummy.android.feature.log.LogSymptomScreen
 import kotlinx.datetime.LocalDate
 
 object Routes {
-    const val Home = "home"
-    const val LogIngredient = "logIngredient/{date}"
-    const val LogSymptom = "logSymptom/{date}"
+    const val HOME = "home"
+    const val LOG_INGREDIENT = "logIngredient/{date}"
+    const val LOG_SYMPTOM = "logSymptom/{date}"
 
     fun logIngredient(date: LocalDate): String = "logIngredient/$date"
+
     fun logSymptom(date: LocalDate): String = "logSymptom/$date"
 }
 
 @Composable
 fun TummyNavHost() {
     val nav = rememberNavController()
-    NavHost(navController = nav, startDestination = Routes.Home) {
-        composable(Routes.Home) {
+    NavHost(navController = nav, startDestination = Routes.HOME) {
+        composable(Routes.HOME) {
             HomeScreen(
                 onNavigateToLogIngredient = { nav.navigate(Routes.logIngredient(it)) },
                 onNavigateToLogSymptom = { nav.navigate(Routes.logSymptom(it)) },
             )
         }
-        composable(Routes.LogIngredient) { entry ->
+        composable(Routes.LOG_INGREDIENT) { entry ->
             val dateStr = entry.arguments?.getString("date")
             if (dateStr != null) {
                 LogIngredientScreen(
@@ -37,7 +38,7 @@ fun TummyNavHost() {
                 )
             }
         }
-        composable(Routes.LogSymptom) { entry ->
+        composable(Routes.LOG_SYMPTOM) { entry ->
             val dateStr = entry.arguments?.getString("date")
             if (dateStr != null) {
                 LogSymptomScreen(

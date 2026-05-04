@@ -12,7 +12,6 @@ import kotlinx.datetime.LocalDate
 class SymptomRepositoryImpl(
     private val dao: SymptomLogDao,
 ) : SymptomRepository {
-
     override fun get(
         start: LocalDate?,
         endInclusive: LocalDate?,

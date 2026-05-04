@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import kotlin.apply
 
 /**
  * Convention de base pour tout module KMP library (AGP 9+).
@@ -16,39 +17,51 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
  * séparé.
  */
 class KmpLibraryConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with(target) {
-        with(pluginManager) {
-            apply("org.jetbrains.kotlin.multiplatform")
-            apply("com.android.kotlin.multiplatform.library")
-        }
-
-        extensions.configure<KotlinMultiplatformExtension> {
-            val kmpAndroid = extensions.getByType<KotlinMultiplatformAndroidLibraryExtension>()
-            kmpAndroid.namespace = target.moduleNamespace()
-            kmpAndroid.compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
-            kmpAndroid.minSdk = libs.findVersion("minSdk").get().toString().toInt()
-
-            listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach {
-                it.binaries.framework {
-                    baseName = target.name
-                    isStatic = true
-                }
+    override fun apply(target: Project) {
+        with(target) {
+            with(pluginManager) {
+                apply("org.jetbrains.kotlin.multiplatform")
+                apply("com.android.kotlin.multiplatform.library")
             }
-            applyDefaultHierarchyTemplate()
 
-            // Room KMP us expect/actual classes
-            targets.configureEach {
-                compilations.configureEach {
-                    compileTaskProvider.configure {
-                        compilerOptions {
-                            freeCompilerArgs.add("-Xexpect-actual-classes")
+            extensions.configure<KotlinMultiplatformExtension> {
+                val kmpAndroid = extensions.getByType<KotlinMultiplatformAndroidLibraryExtension>()
+                kmpAndroid.namespace = target.moduleNamespace()
+                kmpAndroid.compileSdk =
+                    libs
+                        .findVersion("compileSdk")
+                        .get()
+                        .toString()
+                        .toInt()
+                kmpAndroid.minSdk =
+                    libs
+                        .findVersion("minSdk")
+                        .get()
+                        .toString()
+                        .toInt()
+
+                listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach {
+                    it.binaries.framework {
+                        baseName = target.name
+                        isStatic = true
+                    }
+                }
+                applyDefaultHierarchyTemplate()
+
+                // Room KMP us expect/actual classes
+                targets.configureEach {
+                    compilations.configureEach {
+                        compileTaskProvider.configure {
+                            compilerOptions {
+                                freeCompilerArgs.add("-Xexpect-actual-classes")
+                            }
                         }
                     }
                 }
-            }
 
-            sourceSets.commonMain.dependencies {
-                implementation(libs.findLibrary("kotlinx-coroutines-core").get())
+                sourceSets.commonMain.dependencies {
+                    implementation(libs.findLibrary("kotlinx-coroutines-core").get())
+                }
             }
         }
     }

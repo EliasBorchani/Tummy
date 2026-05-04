@@ -16,7 +16,6 @@ class LogSymptomViewModel(
     private val date: LocalDate,
     private val symptomRepository: SymptomRepository,
 ) : BaseViewModel<LogSymptomState, LogSymptomIntent, LogSymptomEvent>() {
-
     override val state: StateFlow<LogSymptomState> = symptomRepository.getAtDate(date)
         .map { entries ->
             LogSymptomState(

@@ -9,13 +9,15 @@ import platform.Foundation.NSUserDomainMask
 
 @OptIn(ExperimentalForeignApi::class)
 actual fun symptomsDatabaseBuilder(): RoomDatabase.Builder<SymptomsDatabase> {
-    val documentDir = NSFileManager.defaultManager.URLForDirectory(
-        directory = NSDocumentDirectory,
-        inDomain = NSUserDomainMask,
-        appropriateForURL = null,
-        create = false,
-        error = null,
-    )?.path.orEmpty()
+    val documentDir = NSFileManager.defaultManager
+        .URLForDirectory(
+            directory = NSDocumentDirectory,
+            inDomain = NSUserDomainMask,
+            appropriateForURL = null,
+            create = false,
+            error = null,
+        )?.path
+        .orEmpty()
     val dbPath = "$documentDir/symptoms.db"
     return Room.databaseBuilder<SymptomsDatabase>(
         name = dbPath,

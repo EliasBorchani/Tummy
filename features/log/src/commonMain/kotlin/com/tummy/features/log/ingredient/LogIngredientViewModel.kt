@@ -21,7 +21,6 @@ class LogIngredientViewModel(
     private val searchIngredients: SearchIngredientsUseCase,
     private val upsertIngredientLog: UpsertIngredientLogUseCase,
 ) : BaseViewModel<LogIngredientState, LogIngredientIntent, LogIngredientEvent>() {
-
     private val query = MutableStateFlow("")
 
     @OptIn(ExperimentalCoroutinesApi::class)

@@ -59,7 +59,10 @@ class SearchIngredientsUseCase(
 
 internal fun String.normalize(): String = lowercase().trim().replace(Regex("\\s+"), " ")
 
-internal fun fuzzyScore(query: String, candidate: String): Double {
+internal fun fuzzyScore(
+    query: String,
+    candidate: String,
+): Double {
     if (query.isEmpty() || candidate.isEmpty()) return 0.0
     if (candidate == query) return 1.0
     if (candidate.startsWith(query)) return 0.95
@@ -72,7 +75,10 @@ internal fun String.bigrams(): Set<String> {
     return (0 until length - 1).mapTo(mutableSetOf()) { substring(it, it + 2) }
 }
 
-internal fun jaccard(a: Set<String>, b: Set<String>): Double {
+internal fun jaccard(
+    a: Set<String>,
+    b: Set<String>,
+): Double {
     if (a.isEmpty() && b.isEmpty()) return 0.0
     val intersect = a.intersect(b).size
     val union = a.union(b).size

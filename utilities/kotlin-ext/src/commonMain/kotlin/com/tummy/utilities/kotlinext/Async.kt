@@ -7,7 +7,10 @@ import kotlinx.coroutines.flow.onStart
 
 sealed interface Async<out T> {
     data object Loading : Async<Nothing>
-    data class Ready<T>(val data: T) : Async<T>
+
+    data class Ready<T>(
+        val data: T,
+    ) : Async<T>
 }
 
 fun <T> Flow<Async<T>>.filterReadyValues(): Flow<T> {

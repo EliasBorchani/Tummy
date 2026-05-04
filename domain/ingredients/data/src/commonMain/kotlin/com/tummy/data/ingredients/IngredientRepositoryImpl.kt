@@ -14,7 +14,6 @@ import kotlinx.datetime.LocalDate
 class IngredientRepositoryImpl(
     private val dao: IngredientLogDao,
 ) : IngredientRepository {
-
     override fun get(
         start: LocalDate?,
         endInclusive: LocalDate?,
@@ -35,31 +34,35 @@ class IngredientRepositoryImpl(
 
     override suspend fun upsert(logEntry: IngredientLogEntry) {
         when (val ingredient = logEntry.ingredient) {
-            is Ingredient.Standard -> dao.insertStandard(
-                StandardIngredientLogEntity(
-                    date = logEntry.date.toString(),
-                    ingredient = ingredient.ref.name,
-                ),
-            )
-            is Ingredient.Custom -> dao.insertCustom(
-                CustomIngredientLogEntity(
-                    date = logEntry.date.toString(),
-                    name = ingredient.name,
-                ),
-            )
+            is Ingredient.Standard ->
+                dao.insertStandard(
+                    StandardIngredientLogEntity(
+                        date = logEntry.date.toString(),
+                        ingredient = ingredient.ref.name,
+                    ),
+                )
+            is Ingredient.Custom ->
+                dao.insertCustom(
+                    CustomIngredientLogEntity(
+                        date = logEntry.date.toString(),
+                        name = ingredient.name,
+                    ),
+                )
         }
     }
 
     override suspend fun delete(logEntry: IngredientLogEntry) {
         when (val ingredient = logEntry.ingredient) {
-            is Ingredient.Standard -> dao.deleteStandard(
-                date = logEntry.date.toString(),
-                ingredient = ingredient.ref.name,
-            )
-            is Ingredient.Custom -> dao.deleteCustom(
-                date = logEntry.date.toString(),
-                name = ingredient.name,
-            )
+            is Ingredient.Standard ->
+                dao.deleteStandard(
+                    date = logEntry.date.toString(),
+                    ingredient = ingredient.ref.name,
+                )
+            is Ingredient.Custom ->
+                dao.deleteCustom(
+                    date = logEntry.date.toString(),
+                    name = ingredient.name,
+                )
         }
     }
 }

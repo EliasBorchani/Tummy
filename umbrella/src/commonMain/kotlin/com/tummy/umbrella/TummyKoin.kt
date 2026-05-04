@@ -64,9 +64,7 @@ private val viewModelsModule = module {
 object TummyDI {
     fun homeViewModel(): HomeViewModel = KoinPlatform.getKoin().get()
 
-    fun logIngredientViewModel(date: LocalDate): LogIngredientViewModel =
-        KoinPlatform.getKoin().get { parametersOf(date) }
+    fun logIngredientViewModel(date: LocalDate): LogIngredientViewModel = KoinPlatform.getKoin().get { parametersOf(date) }
 
-    fun logSymptomViewModel(date: LocalDate): LogSymptomViewModel =
-        KoinPlatform.getKoin().get { parametersOf(date) }
+    fun logSymptomViewModel(date: LocalDate): LogSymptomViewModel = KoinPlatform.getKoin().get { parametersOf(date) }
 }

@@ -8,7 +8,6 @@ import com.tummy.tokens.resources.MR
 class AndroidStandardIngredientNameProvider(
     private val context: Context,
 ) : StandardIngredientNameProvider {
-
     override fun nameOf(ingredient: StandardIngredient): String {
         val resourceId = when (ingredient) {
             StandardIngredient.Dairy -> MR.strings.ingredient_dairy.resourceId

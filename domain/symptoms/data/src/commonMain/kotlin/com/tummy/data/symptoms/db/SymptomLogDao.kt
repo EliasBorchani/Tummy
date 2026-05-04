@@ -12,7 +12,10 @@ interface SymptomLogDao {
     suspend fun insert(entity: SymptomLogEntity)
 
     @Query("DELETE FROM symptom_log WHERE date = :date AND symptom = :symptom")
-    suspend fun delete(date: String, symptom: String)
+    suspend fun delete(
+        date: String,
+        symptom: String,
+    )
 
     @Query(
         """

@@ -29,7 +29,6 @@ class HomeViewModel(
     private val symptomRepository: SymptomRepository,
     private val standardIngredientNameProvider: StandardIngredientNameProvider,
 ) : BaseViewModel<HomeState, HomeIntent, HomeEvent>() {
-
     private val initialDate: LocalDate = today()
     private val selectedDate = MutableStateFlow(initialDate)
 

@@ -11,13 +11,15 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
  * - Injecte lifecycle-viewmodel + koin-core en commonMain
  */
 class KmpFeatureConventionPlugin : Plugin<Project> {
-    override fun apply(target: Project) = with(target) {
-        pluginManager.apply("tummy.kmp.library")
+    override fun apply(target: Project) {
+        return with(target) {
+            pluginManager.apply("tummy.kmp.library")
 
-        extensions.configure<KotlinMultiplatformExtension> {
-            sourceSets.commonMain.dependencies {
-                implementation(libs.findLibrary("androidx-lifecycle-viewmodel").get())
-                implementation(libs.findLibrary("koin-core").get())
+            extensions.configure<KotlinMultiplatformExtension> {
+                sourceSets.commonMain.dependencies {
+                    implementation(libs.findLibrary("androidx-lifecycle-viewmodel").get())
+                    implementation(libs.findLibrary("koin-core").get())
+                }
             }
         }
     }

@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
  * automatiquement en AsyncSequence côté Swift.
  */
 abstract class BaseViewModel<State : Any, Intent : Any, Event : Any> : ViewModel() {
-
     abstract val state: StateFlow<State>
 
     private val _events = MutableSharedFlow<Event>(extraBufferCapacity = 16)

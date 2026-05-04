@@ -37,6 +37,10 @@ moko = "0.26.3"
 # Logging
 napier = "2.7.1"
 
+# Lint / Format
+spotless = "7.0.4"
+ktlint = "1.5.0"
+
 # SDK Android — AGP 9.2 targets API 37
 minSdk = "26"
 compileSdk = "37"
@@ -115,6 +119,7 @@ ksp                   = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 room                  = { id = "androidx.room", version.ref = "room" }
 skie                  = { id = "co.touchlab.skie", version.ref = "skie" }
 moko-resources        = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko" }
+spotless              = { id = "com.diffplug.spotless", version.ref = "spotless" }
 
 # Convention plugins (résolus via build-logic)
 tummy-kmp-library     = { id = "tummy.kmp.library" }

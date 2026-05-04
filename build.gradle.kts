@@ -10,4 +10,19 @@ plugins {
     alias(libs.plugins.room) apply false
     alias(libs.plugins.skie) apply false
     alias(libs.plugins.moko.resources) apply false
+    alias(libs.plugins.spotless)
+}
+
+spotless {
+    val ktlintVersion = libs.versions.ktlint.get()
+    kotlin {
+        target("**/*.kt")
+        targetExclude("**/build/**", "**/generated/**")
+        ktlint(ktlintVersion)
+    }
+    kotlinGradle {
+        target("**/*.kts")
+        targetExclude("**/build/**")
+        ktlint(ktlintVersion)
+    }
 }

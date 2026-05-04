@@ -10,7 +10,10 @@ class UpsertIngredientLogUseCase(
     private val ingredientRepository: IngredientRepository,
     private val standardIngredientNameProvider: StandardIngredientNameProvider,
 ) {
-    suspend fun invoke(date: LocalDate, ingredient: Ingredient) {
+    suspend fun invoke(
+        date: LocalDate,
+        ingredient: Ingredient,
+    ) {
         val resolved = when (ingredient) {
             is Ingredient.Standard -> ingredient
             is Ingredient.Custom -> resolve(ingredient.name)

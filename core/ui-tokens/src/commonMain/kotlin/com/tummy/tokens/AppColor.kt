@@ -9,7 +9,9 @@ package com.tummy.tokens
  * class` pour que Swift la voie comme un struct (les value classes Kotlin sont
  * effacées vers leur type sous-jacent dans l'interop ObjC/Swift).
  */
-data class AppColor(val argb: Long) {
+data class AppColor(
+    val argb: Long,
+) {
     val alpha: Int get() = ((argb shr 24) and 0xFF).toInt()
     val red: Int get() = ((argb shr 16) and 0xFF).toInt()
     val green: Int get() = ((argb shr 8) and 0xFF).toInt()

@@ -5,10 +5,16 @@ plugins {
 }
 
 kotlin {
-    val kmpAndroid = extensions.getByType(com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension::class.java)
+    val kmpAndroid = extensions.getByType(
+        com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryExtension::class.java,
+    )
     kmpAndroid.namespace = "com.tummy.umbrella"
-    kmpAndroid.compileSdk = libs.versions.compileSdk.get().toInt()
-    kmpAndroid.minSdk = libs.versions.minSdk.get().toInt()
+    kmpAndroid.compileSdk = libs.versions.compileSdk
+        .get()
+        .toInt()
+    kmpAndroid.minSdk = libs.versions.minSdk
+        .get()
+        .toInt()
 
     listOf(iosX64(), iosArm64(), iosSimulatorArm64()).forEach { target ->
         target.binaries.framework {
