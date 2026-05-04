@@ -34,23 +34,12 @@ include(":utilities:presentation")
 // Core
 include(":core:ui-tokens")
 
-// Domain — un module api + un module data par bounded context
-include(":domain:meal:api")
-include(":domain:meal:data")
-include(":domain:user:api")
-include(":domain:user:data")
-include(":domain:nutrition:api")
-include(":domain:nutrition:data")
-// Food & Symptom Log MVP
+// Domain — api module + data module
 include(":domain:ingredients:api")
 include(":domain:ingredients:data")
 include(":domain:symptoms:api")
 include(":domain:symptoms:data")
 
 // Features (VM + state, commonMain only)
-include(":features:meal")
-include(":features:diary")
-include(":features:settings")
-// Food & Symptom Log MVP
 include(":features:home")
 include(":features:log")

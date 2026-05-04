@@ -15,8 +15,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) = with(target) {
         with(pluginManager) {
             apply("com.android.application")
-            // AGP 9+ intègre nativement Kotlin, pas besoin de kotlin.android.
-            // On reste sur Jetpack Compose (AndroidX) côté Android, pas JB Compose MP.
             apply("org.jetbrains.kotlin.plugin.compose")
         }
 

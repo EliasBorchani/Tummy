@@ -4,7 +4,7 @@ import TummyShared
 @main
 struct TummyApp: App {
     init() {
-        // Démarre Koin (modules domaines + network + features).
+        // Start Koin
         _ = TummyKoinKt.startTummyKoin { _ in }
     }
 

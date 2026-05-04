@@ -23,7 +23,6 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
         }
 
         extensions.configure<KotlinMultiplatformExtension> {
-            // Config Android via l'extension exposée par android-kmp-library.
             val kmpAndroid = extensions.getByType<KotlinMultiplatformAndroidLibraryExtension>()
             kmpAndroid.namespace = target.moduleNamespace()
             kmpAndroid.compileSdk = libs.findVersion("compileSdk").get().toString().toInt()
@@ -37,8 +36,7 @@ class KmpLibraryConventionPlugin : Plugin<Project> {
             }
             applyDefaultHierarchyTemplate()
 
-            // Room KMP utilise expect/actual classes — feature encore Beta côté
-            // Kotlin mais stable d'usage. Opt-in pour silencer les warnings.
+            // Room KMP us expect/actual classes
             targets.configureEach {
                 compilations.configureEach {
                     compileTaskProvider.configure {

@@ -3,14 +3,11 @@ plugins {
 }
 
 dependencies {
-    // Plugins dont les conventions référencent les types/extensions API.
     compileOnly(libs.kotlin.gradle.plugin)
     compileOnly(libs.android.gradle.plugin)
     compileOnly(libs.ksp.gradle.plugin)
     compileOnly(libs.room.gradle.plugin)
     compileOnly(libs.moko.resources.gradle.plugin)
-    // SKIE, Compose, Serialization : appliqués via alias() directement dans les modules,
-    // pas besoin sur le classpath de build-logic.
 }
 
 gradlePlugin {

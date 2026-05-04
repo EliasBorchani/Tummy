@@ -2,10 +2,6 @@ plugins {
     alias(libs.plugins.tummy.android.app)
 }
 
-// composeApp est une app Android pure — layout AGP standard (src/main/…).
-// Toute la config (namespace, compileSdk, minSdk, buildFeatures.compose) vit
-// dans le convention plugin tummy.android.app.
-
 dependencies {
     implementation(projects.umbrella)
 
@@ -14,20 +10,11 @@ dependencies {
     implementation(projects.utilities.network)
     implementation(projects.core.uiTokens)
 
-    implementation(projects.domain.meal.api)
-    implementation(projects.domain.meal.data)
-    implementation(projects.domain.user.api)
-    implementation(projects.domain.user.data)
-    implementation(projects.domain.nutrition.api)
-    implementation(projects.domain.nutrition.data)
     implementation(projects.domain.ingredients.api)
     implementation(projects.domain.ingredients.data)
     implementation(projects.domain.symptoms.api)
     implementation(projects.domain.symptoms.data)
 
-    implementation(projects.features.meal)
-    implementation(projects.features.diary)
-    implementation(projects.features.settings)
     implementation(projects.features.home)
     implementation(projects.features.log)
 
