@@ -7,5 +7,7 @@ sealed interface LogSymptomIntent {
         val symptom: Symptom,
     ) : LogSymptomIntent
 
+    data object ClearAll : LogSymptomIntent
+
     data object Done : LogSymptomIntent
 }

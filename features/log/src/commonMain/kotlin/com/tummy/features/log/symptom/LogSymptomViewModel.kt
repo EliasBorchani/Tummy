@@ -32,7 +32,22 @@ class LogSymptomViewModel(
     override fun onIntent(intent: LogSymptomIntent) {
         when (intent) {
             is LogSymptomIntent.Toggle -> handleToggle(intent.symptom)
+            LogSymptomIntent.ClearAll -> handleClearAll()
             LogSymptomIntent.Done -> emitEvent(LogSymptomEvent.Closed)
+        }
+    }
+
+    private fun handleClearAll() {
+        val active = state.value.activeSymptoms
+        if (active.isEmpty()) return
+        scope.launch {
+            runCatching {
+                active.forEach { symptom ->
+                    symptomRepository.delete(SymptomLogEntry(date, symptom))
+                }
+            }.onFailure {
+                emitEvent(LogSymptomEvent.ShowError(it.message ?: "Failed to clear"))
+            }
         }
     }
 

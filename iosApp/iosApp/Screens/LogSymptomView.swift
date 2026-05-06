@@ -35,27 +35,32 @@ struct LogSymptomView: View {
         ))
     }
 
+    @Environment(\.theme) private var theme
+
     var body: some View {
-        List {
-            ForEach(allSymptoms, id: \.self) { symptom in
-                Toggle(
-                    symptom.localizedName,
-                    isOn: Binding(
-                        get: { obs.state.activeSymptoms.contains(symptom) },
-                        set: { _ in obs.vm.onIntent(intent: LogSymptomIntentToggle(symptom: symptom)) }
-                    )
-                )
+        ZStack {
+            Color(theme.background).ignoresSafeArea()
+
+            VStack(alignment: .leading, spacing: 0) {
+                navBar
+                    .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
+
+                editorialHeader
+                    .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
+                    .padding(.top, CGFloat(AppDimens.shared.SpaceM))
+
+                tilesGrid
+                    .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
+                    .padding(.top, CGFloat(AppDimens.shared.SpaceL))
+
+                Spacer(minLength: CGFloat(AppDimens.shared.SpaceL))
+
+                footer
+                    .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
+                    .padding(.bottom, CGFloat(AppDimens.shared.SpaceM))
             }
         }
-        .navigationTitle(MR.strings.shared.log_symptom_title.localized())
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(MR.strings.shared.log_symptom_done.localized()) {
-                    obs.vm.onIntent(intent: LogSymptomIntentDone())
-                }
-            }
-        }
+        .toolbar(.hidden, for: .navigationBar)
         .onReceive(obs.events) { event in
             switch onEnum(of: event) {
             case .closed:
@@ -66,7 +71,91 @@ struct LogSymptomView: View {
         }
     }
 
-    private var allSymptoms: [Symptom] {
-        [.bloating, .abdominalPain, .gas, .diarrhea, .constipation, .nausea]
+    // MARK: - Sub-views
+
+    private var navBar: some View {
+        HStack(spacing: CGFloat(AppDimens.shared.SpaceS)) {
+            NavIconButton(
+                systemName: "chevron.left",
+                accessibilityLabel: MR.strings.shared.a11y_back.localized(),
+                action: onClose
+            )
+            Spacer()
+            Eyebrow(text: navEyebrow)
+            Spacer()
+            AppButton(
+                title: MR.strings.shared.log_symptom_done.localized(),
+                kind: .primary,
+                size: .sm,
+                action: { obs.vm.onIntent(intent: LogSymptomIntentDone()) }
+            )
+        }
+        .padding(.top, CGFloat(AppDimens.shared.SpaceS))
+    }
+
+    private var editorialHeader: some View {
+        VStack(alignment: .leading, spacing: CGFloat(AppDimens.shared.SpaceS)) {
+            Text(MR.strings.shared.log_symptom_question.localized())
+                .appTextStyle(AppTypography.shared.DisplayM)
+                .foregroundStyle(Color(theme.ink))
+                .fixedSize(horizontal: false, vertical: true)
+            Text(MR.strings.shared.log_symptom_subtitle.localized())
+                .appTextStyle(AppTypography.shared.BodyM)
+                .foregroundStyle(Color(theme.inkMuted))
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    private var tilesGrid: some View {
+        LazyVGrid(
+            columns: [
+                GridItem(.flexible(), spacing: CGFloat(AppDimens.shared.SpaceS)),
+                GridItem(.flexible(), spacing: CGFloat(AppDimens.shared.SpaceS)),
+            ],
+            spacing: CGFloat(AppDimens.shared.SpaceS)
+        ) {
+            ForEach(Symptom.allCases, id: \.self) { symptom in
+                ToggleTile(
+                    label: symptom.localizedName,
+                    hint: symptom.localizedHint,
+                    onEyebrow: MR.strings.shared.log_symptom_eyebrow_logged.localized(),
+                    offEyebrow: MR.strings.shared.log_symptom_eyebrow_off.localized(),
+                    isOn: obs.state.activeSymptoms.contains(symptom),
+                    onToggle: { obs.vm.onIntent(intent: LogSymptomIntentToggle(symptom: symptom)) }
+                )
+            }
+        }
+    }
+
+    private var footer: some View {
+        VStack(spacing: 0) {
+            Hairline()
+            HStack {
+                Eyebrow(text: countLine)
+                Spacer()
+                AppButton(
+                    title: MR.strings.shared.log_symptom_clear_all.localized(),
+                    kind: .tertiary,
+                    size: .sm,
+                    action: { obs.vm.onIntent(intent: LogSymptomIntentClearAll()) }
+                )
+                .disabled(obs.state.activeSymptoms.isEmpty)
+            }
+            .padding(.top, CGFloat(AppDimens.shared.SpaceM))
+        }
+    }
+
+    // MARK: - Helpers
+
+    private var navEyebrow: String {
+        let title = MR.strings.shared.log_symptom_title.localized()
+        let f = DateFormatter()
+        f.dateFormat = "MMM d"
+        return "\(title) · \(f.string(from: date))"
+    }
+
+    private var countLine: String {
+        MR.strings.shared.log_symptom_logged_count
+            .localized(Int32(obs.state.activeSymptoms.count), Int32(Symptom.allCases.count))
     }
 }

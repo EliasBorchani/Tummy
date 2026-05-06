@@ -10,6 +10,7 @@
     <string name="a11y_add">Add</string>
     <string name="a11y_previous_day">Previous day</string>
     <string name="a11y_next_day">Next day</string>
+    <string name="a11y_back">Back</string>
 
     <string name="ingredient_dairy">Dairy</string>
     <string name="ingredient_wheat">Wheat</string>
@@ -21,11 +22,17 @@
     <string name="ingredient_shellfish">Shellfish</string>
 
     <string name="symptom_bloating">Bloating</string>
+    <string name="symptom_bloating_hint">Tight, full</string>
     <string name="symptom_abdominal_pain">Abdominal pain</string>
+    <string name="symptom_abdominal_pain_hint">Cramps, ache</string>
     <string name="symptom_gas">Gas</string>
+    <string name="symptom_gas_hint">Wind, burping</string>
     <string name="symptom_diarrhea">Diarrhea</string>
+    <string name="symptom_diarrhea_hint">Loose, frequent</string>
     <string name="symptom_constipation">Constipation</string>
+    <string name="symptom_constipation_hint">Hard, infrequent</string>
     <string name="symptom_nausea">Nausea</string>
+    <string name="symptom_nausea_hint">Queasy</string>
 
     <string name="home_today_eyebrow">Today</string>
     <string name="home_empty_day">Nothing logged for this day.</string>
@@ -46,4 +53,10 @@
 
     <string name="log_symptom_title">Symptoms</string>
     <string name="log_symptom_done">Done</string>
+    <string name="log_symptom_question">How did your gut feel today?</string>
+    <string name="log_symptom_subtitle">Tap any that applied. You can adjust this on previous days, too.</string>
+    <string name="log_symptom_logged_count">%02d / %02d logged</string>
+    <string name="log_symptom_clear_all">Clear all</string>
+    <string name="log_symptom_eyebrow_logged">Logged</string>
+    <string name="log_symptom_eyebrow_off">Off</string>
 </resources>
