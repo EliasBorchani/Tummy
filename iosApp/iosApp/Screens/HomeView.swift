@@ -73,7 +73,8 @@ struct HomeView: View {
                 }
 
                 if showsListening {
-                    ListeningBanner(
+                    Banner(
+                        eyebrow: MR.strings.shared.home_listening_eyebrow.localized(),
                         message: MR.strings.shared.home_more_days_hint.localized(daysRemaining)
                     )
                     .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
@@ -205,34 +206,6 @@ private struct EmptyDayCard: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-    }
-}
-
-private struct ListeningBanner: View {
-    let message: String
-
-    @Environment(\.theme) private var theme
-
-    var body: some View {
-        HStack(alignment: .top, spacing: CGFloat(AppDimens.shared.SpaceM)) {
-            Eyebrow(text: MR.strings.shared.home_listening_eyebrow.localized())
-            Text(message)
-                .appTextStyle(AppTypography.shared.BodyM)
-                .foregroundStyle(Color(theme.inkMuted))
-                .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
-        .padding(.vertical, CGFloat(AppDimens.shared.SpaceS) + 2)
-        .overlay(
-            RoundedRectangle(cornerRadius: CGFloat(AppDimens.shared.RadiusS), style: .continuous)
-                .strokeBorder(
-                    Color(theme.stroke),
-                    // Dash pattern is a drawing recipe (on/off lengths), not a
-                    // dimension expressible in the spacing scale. Kept inline.
-                    style: StrokeStyle(lineWidth: CGFloat(AppDimens.shared.StrokeThin),
-                                       dash: [4, 3])
-                )
-        )
     }
 }
 

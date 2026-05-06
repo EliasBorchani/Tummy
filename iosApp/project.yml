@@ -69,5 +69,11 @@ targets:
               name=$(basename "$bundle" | tr ':' '_')
               rm -rf "$MOKO_DST/$name"
               cp -R "$bundle" "$MOKO_DST/$name"
+              # moko-resources 0.26.x double-escapes printf format specifiers
+              # in generated .stringsdict files (`%%d` instead of `%d`),
+              # which iOS renders literally and breaks plural strings. Patch
+              # in place after copy. `%#@name@` placeholders use single `%`
+              # so this replacement is safe.
+              find "$MOKO_DST/$name" -name "*.stringsdict" -exec sed -i '' 's|%%|%|g' {} +
             done
           fi
