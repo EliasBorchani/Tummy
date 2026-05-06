@@ -294,11 +294,7 @@ private struct IngredientRow: View {
     }
 
     private var occurrenceLabel: String {
-        let count = Int(entry.occurrenceCount)
-        if count == 1 {
-            return MR.strings.shared.ingredient_occurrences_one.localized()
-        }
-        return MR.strings.shared.ingredient_occurrences_other.localized(count)
+        MR.plurals.shared.ingredient_occurrences.localized(Int(entry.occurrenceCount))
     }
 }
 

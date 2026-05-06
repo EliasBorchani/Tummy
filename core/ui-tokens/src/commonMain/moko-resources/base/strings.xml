@@ -38,9 +38,6 @@
     <string name="home_add_ingredient">Add ingredient</string>
     <string name="home_add_symptom">Add symptom</string>
 
-    <string name="ingredient_occurrences_one">1 occurrence</string>
-    <string name="ingredient_occurrences_other">%d occurrences</string>
-
     <string name="log_ingredient_title">Add ingredient</string>
     <string name="log_ingredient_search_hint">Search or type a custom ingredient</string>
     <string name="log_ingredient_save_as_new">Add "%s"</string>

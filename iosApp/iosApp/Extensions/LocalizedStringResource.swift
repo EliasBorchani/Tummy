@@ -19,3 +19,14 @@ extension ResourcesStringResource {
         return String(format: normalized, arguments: args)
     }
 }
+
+extension ResourcesPluralsResource {
+    /// Resolves a plural via the system stringsdict so iOS picks the right
+    /// `one / other / few / many / …` form for the active locale. MOKO emits
+    /// the format with `NSStringFormatValueTypeKey = "d"`, which expects a
+    /// 32-bit int — we cast to `Int32` to match.
+    func localized(_ count: Int) -> String {
+        let format = NSLocalizedString(self.resourceId, bundle: self.bundle, comment: "")
+        return String.localizedStringWithFormat(format, Int32(count))
+    }
+}

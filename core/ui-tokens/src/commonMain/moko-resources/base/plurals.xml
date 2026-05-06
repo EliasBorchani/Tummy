@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="ingredient_occurrences">
+        <item quantity="one">1 occurrence</item>
+        <item quantity="other">%d occurrences</item>
+    </plurals>
+</resources>
