@@ -91,6 +91,22 @@ class HomeViewModel(
         val symptomsToday = symptomLogs.filter { it.date == date }.map { it.symptom }.toSet()
         val daysLoggedTotal = ingredientLogs.map { it.date }.toSet().size
 
+        // An ingredient's dot is global (independent of which day we're
+        // viewing), so compute once per unique ingredient and reuse for
+        // both today's list and the ribbon.
+        val dotByIngredient: Map<Ingredient, DotColor> = ingredientLogs
+            .map { it.ingredient }
+            .toSet()
+            .associateWith { ingredient ->
+                dotFor(
+                    SuspectScoreComputer.compute(
+                        ingredient = ingredient,
+                        ingredientLogs = ingredientLogs,
+                        symptomLogs = symptomLogs,
+                    ),
+                )
+            }
+
         val ingredientsWithDots = ingredientsToday.map { entry ->
             val result = SuspectScoreComputer.compute(
                 ingredient = entry.ingredient,
@@ -105,12 +121,38 @@ class HomeViewModel(
             )
         }
 
+        val ribbon = buildRibbon(today(), ingredientLogs, symptomLogs, dotByIngredient)
+
         return HomeState(
             selectedDate = date,
             ingredients = ingredientsWithDots,
             symptoms = symptomsToday,
             daysLoggedTotal = daysLoggedTotal,
+            ribbon = ribbon,
         )
+    }
+
+    private fun buildRibbon(
+        today: LocalDate,
+        ingredientLogs: List<IngredientLogEntry>,
+        symptomLogs: List<SymptomLogEntry>,
+        dotByIngredient: Map<Ingredient, DotColor>,
+    ): List<RibbonDay> {
+        val ingredientsByDate = ingredientLogs.groupBy { it.date }
+        val symptomsByDate = symptomLogs.groupBy { it.date }
+        val window = (RIBBON_WINDOW_DAYS - 1) downTo 0
+        return window.map { offset ->
+            val day = today.minus(offset, DateTimeUnit.DAY)
+            val bands = ingredientsByDate[day]
+                ?.mapNotNull { dotByIngredient[it.ingredient] }
+                ?.toSet()
+                .orEmpty()
+            RibbonDay(
+                date = day,
+                presentBands = bands,
+                symptomCount = symptomsByDate[day]?.size ?: 0,
+            )
+        }
     }
 
     private fun displayNameFor(ingredient: Ingredient): String = when (ingredient) {
@@ -132,4 +174,10 @@ class HomeViewModel(
     }
 
     private fun today(): LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault())
+
+    companion object {
+        // Calendar ribbon width (days). Today included, so the leftmost
+        // column is `today - (RIBBON_WINDOW_DAYS - 1)`.
+        const val RIBBON_WINDOW_DAYS = 14
+    }
 }

@@ -59,12 +59,18 @@ struct HomeView: View {
             VStack(spacing: CGFloat(AppDimens.shared.SpaceM)) {
                 Color.clear.frame(height: CGFloat(AppDimens.shared.HeightControlLg))
 
-                DateCard(
-                    date: obs.state.selectedDate,
-                    onPrevious: { obs.vm.onIntent(intent: HomeIntentPreviousDay()) },
-                    onNext: { obs.vm.onIntent(intent: HomeIntentNextDay()) }
-                )
-                .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
+                VStack(alignment: .leading, spacing: CGFloat(AppDimens.shared.SpaceS)) {
+                    EditorialDate(date: obs.state.selectedDate)
+                        .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
+
+                    CalendarRibbon(
+                        days: obs.state.ribbon,
+                        selectedDate: obs.state.selectedDate,
+                        onSelect: { date in
+                            obs.vm.onIntent(intent: HomeIntentSelectDate(date: date))
+                        }
+                    )
+                }
 
                 if showsListening {
                     ListeningBanner(
@@ -136,51 +142,41 @@ struct HomeView: View {
     }
 }
 
-// MARK: - Date card
+// MARK: - Editorial date
 
-private struct DateCard: View {
+private struct EditorialDate: View {
     let date: LocalDate
-    let onPrevious: () -> Void
-    let onNext: () -> Void
 
     @Environment(\.theme) private var theme
 
     var body: some View {
-        Card {
-            HStack(spacing: CGFloat(AppDimens.shared.SpaceS)) {
-                NavIconButton(
-                    systemName: "chevron.left",
-                    accessibilityLabel: MR.strings.shared.a11y_previous_day.localized(),
-                    action: onPrevious
-                )
-
-                VStack(alignment: .leading, spacing: CGFloat(AppDimens.shared.SpaceXS)) {
-                    Eyebrow(text: weekdayLine)
-                    Text(headlineLine)
-                        .appTextStyle(AppTypography.shared.DisplayM)
-                        .foregroundStyle(Color(theme.ink))
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, CGFloat(AppDimens.shared.SpaceS))
-
-                NavIconButton(
-                    systemName: "chevron.right",
-                    accessibilityLabel: MR.strings.shared.a11y_next_day.localized(),
-                    action: onNext
-                )
-            }
+        VStack(alignment: .leading, spacing: CGFloat(AppDimens.shared.SpaceXS)) {
+            Eyebrow(text: eyebrowLine)
+            Text(headlineLine)
+                .appTextStyle(AppTypography.shared.DisplayL)
+                .foregroundStyle(Color(theme.ink))
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private var weekdayLine: String {
+    private var eyebrowLine: String {
+        // "Today · 05/05" when looking at today; "Tuesday · 05/05" otherwise.
+        let weekday: String
+        if Calendar.current.isDateInToday(date.toSwiftDate()) {
+            weekday = MR.strings.shared.home_today_eyebrow.localized()
+        } else {
+            let f = DateFormatter()
+            f.dateFormat = "EEEE"
+            weekday = f.string(from: date.toSwiftDate())
+        }
         let f = DateFormatter()
-        f.dateFormat = "EEEE"
-        return f.string(from: date.toSwiftDate())
+        f.dateFormat = "MM/dd"
+        return "\(weekday) · \(f.string(from: date.toSwiftDate()))"
     }
 
     private var headlineLine: String {
         let f = DateFormatter()
-        f.dateFormat = "MMM d"
+        f.dateFormat = "MMMM d"
         return f.string(from: date.toSwiftDate())
     }
 }
