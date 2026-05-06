@@ -286,7 +286,7 @@ private struct IngredientRow: View {
 
     var body: some View {
         HStack(spacing: CGFloat(AppDimens.shared.SpaceM)) {
-            DotIndicator(color: entry.dot)
+            SuspectDot(color: entry.dot, size: CGFloat(AppDimens.shared.SpaceL))
             Text(entry.displayName)
                 .appTextStyle(AppTypography.shared.BodyL)
                 .foregroundStyle(Color(theme.ink))
@@ -304,31 +304,6 @@ private struct SymptomRow: View {
         Text(symptom.localizedName)
             .appTextStyle(AppTypography.shared.BodyL)
             .foregroundStyle(Color(theme.ink))
-    }
-}
-
-private struct DotIndicator: View {
-    let color: DotColor
-
-    @Environment(\.theme) private var theme
-
-    var body: some View {
-        Circle()
-            .fill(swiftColor)
-            // Placeholder until SuspectDot ships; SpaceM reads as a small
-            // status dot at this size.
-            .frame(width: CGFloat(AppDimens.shared.SpaceM),
-                   height: CGFloat(AppDimens.shared.SpaceM))
-    }
-
-    private var swiftColor: Color {
-        switch color {
-        case .grey: return Color(theme.signalNone)
-        case .green: return Color(theme.signalLow)
-        case .yellow: return Color(theme.signalMid)
-        case .red: return Color(theme.signalHigh)
-        @unknown default: return Color(theme.signalNone)
-        }
     }
 }
 
