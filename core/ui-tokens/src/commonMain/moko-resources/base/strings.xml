@@ -28,7 +28,8 @@
     <string name="symptom_nausea">Nausea</string>
 
     <string name="home_today_eyebrow">Today</string>
-    <string name="home_empty_day">Nothing logged for this day. Tap + to start.</string>
+    <string name="home_empty_day">Nothing logged for this day.</string>
+    <string name="home_empty_day_body">Add an ingredient or a symptom — suspect dots fill in once each item has 5+ days of data.</string>
     <string name="home_more_days_hint">%d more days of logging to start seeing patterns.</string>
     <string name="home_listening_eyebrow">Listening</string>
     <string name="home_section_ingredients">Ingredients</string>

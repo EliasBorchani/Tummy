@@ -70,6 +70,8 @@ struct HomeView: View {
                             obs.vm.onIntent(intent: HomeIntentSelectDate(date: date))
                         }
                     )
+
+                    Hairline()
                 }
 
                 if showsListening {
@@ -83,8 +85,18 @@ struct HomeView: View {
                 Group {
                     if isEmpty {
                         VStack(spacing: 0) {
-                            EmptyDayCard()
-                                .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
+                            EmptyState(
+                                headline: MR.strings.shared.home_empty_day.localized(),
+                                message: MR.strings.shared.home_empty_day_body.localized(),
+                                primary: .init(
+                                    label: MR.strings.shared.home_add_ingredient.localized(),
+                                    onTap: { obs.vm.onIntent(intent: HomeIntentAddIngredient()) }
+                                ),
+                                secondary: .init(
+                                    label: MR.strings.shared.home_add_symptom.localized(),
+                                    onTap: { obs.vm.onIntent(intent: HomeIntentAddSymptom()) }
+                                )
+                            )
                             Spacer()
                         }
                     } else {
@@ -194,24 +206,6 @@ private struct EditorialDate: View {
     }
 }
 
-// MARK: - Empty state + listening banner
-
-private struct EmptyDayCard: View {
-    @Environment(\.theme) private var theme
-
-    var body: some View {
-        Card {
-            VStack(alignment: .leading, spacing: CGFloat(AppDimens.shared.SpaceS)) {
-                Eyebrow(text: MR.strings.shared.home_today_eyebrow.localized())
-                Text(MR.strings.shared.home_empty_day.localized())
-                    .appTextStyle(AppTypography.shared.BodyL)
-                    .foregroundStyle(Color(theme.inkMuted))
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-    }
-}
-
 // MARK: - Day list (rows + sections)
 
 private struct DayList: View {
@@ -236,7 +230,10 @@ private struct DayList: View {
                             }
                     }
                 } header: {
-                    Eyebrow(text: MR.strings.shared.home_section_ingredients.localized())
+                    SectionHeader(
+                        label: MR.strings.shared.home_section_ingredients.localized(),
+                        count: state.ingredients.count
+                    )
                 }
             }
 
@@ -271,7 +268,10 @@ private struct DayList: View {
                 .listRowBackground(Color.clear)
                 .listRowSeparator(.hidden)
             } header: {
-                Eyebrow(text: MR.strings.shared.home_section_symptoms.localized())
+                SectionHeader(
+                    label: MR.strings.shared.home_section_symptoms.localized(),
+                    count: state.symptoms.count
+                )
             }
         }
         .listStyle(.insetGrouped)
