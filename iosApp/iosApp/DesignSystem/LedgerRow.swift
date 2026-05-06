@@ -32,7 +32,6 @@ struct LedgerRow<Trailing: View>: View {
 
             trailing()
         }
-        .padding(.vertical, CGFloat(AppDimens.shared.SpaceS))
     }
 }
 
