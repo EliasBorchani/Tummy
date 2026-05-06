@@ -58,7 +58,7 @@ struct LogIngredientView: View {
 
                 if !obs.state.query.isEmpty && !obs.state.isSearching && !hasExactMatch {
                     Button(action: { obs.vm.onIntent(intent: LogIngredientIntentSaveAsCustom()) }) {
-                        Text(String(format: MR.strings.shared.log_ingredient_save_as_new.localized(), obs.state.query.trimmingCharacters(in: .whitespaces)))
+                        Text(MR.strings.shared.log_ingredient_save_as_new.localized(obs.state.query.trimmingCharacters(in: .whitespaces)))
                             .foregroundStyle(.primary)
                     }
                 }

@@ -3,7 +3,13 @@
     <string name="app_name">Tummy</string>
     <string name="common_ok">OK</string>
     <string name="common_cancel">Cancel</string>
+    <string name="common_done">Done</string>
     <string name="common_retry">Retry</string>
+    <string name="common_add">Add</string>
+
+    <string name="a11y_add">Add</string>
+    <string name="a11y_previous_day">Previous day</string>
+    <string name="a11y_next_day">Next day</string>
 
     <string name="ingredient_dairy">Dairy</string>
     <string name="ingredient_wheat">Wheat</string>
@@ -21,10 +27,14 @@
     <string name="symptom_constipation">Constipation</string>
     <string name="symptom_nausea">Nausea</string>
 
+    <string name="home_today_eyebrow">Today</string>
     <string name="home_empty_day">Nothing logged for this day. Tap + to start.</string>
     <string name="home_more_days_hint">%d more days of logging to start seeing patterns.</string>
+    <string name="home_listening_eyebrow">Listening</string>
     <string name="home_section_ingredients">Ingredients</string>
     <string name="home_section_symptoms">Symptoms</string>
+    <string name="home_add_eyebrow">Add</string>
+    <string name="home_add_question">What did you want to log?</string>
     <string name="home_add_ingredient">Add ingredient</string>
     <string name="home_add_symptom">Add symptom</string>
 
