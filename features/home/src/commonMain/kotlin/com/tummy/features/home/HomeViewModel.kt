@@ -110,6 +110,10 @@ class HomeViewModel(
                 )
             }
 
+        val occurrenceByIngredient: Map<Ingredient, Int> = ingredientLogs
+            .groupingBy { it.ingredient }
+            .eachCount()
+
         val ingredientsWithDots = ingredientsToday.map { entry ->
             val result = SuspectScoreComputer.compute(
                 ingredient = entry.ingredient,
@@ -121,10 +125,16 @@ class HomeViewModel(
                 displayName = displayNameFor(entry.ingredient),
                 dot = dotFor(result),
                 perSymptomScore = (result as? SuspectScoreResult.Computed)?.scoresPerSymptom,
+                occurrenceCount = occurrenceByIngredient[entry.ingredient] ?: 0,
             )
         }
 
-        val ribbon = buildRibbon(today(), ingredientLogs, symptomLogs, dotByIngredient)
+        // Window's right edge follows selection, with a small forward buffer
+        // so the selected day always shows a few "newer" columns of context;
+        // capped at today so we never reveal future days.
+        val today = today()
+        val windowEnd = minOf(today, date.plus(RIBBON_FORWARD_BUFFER, DateTimeUnit.DAY))
+        val ribbon = buildRibbon(windowEnd, ingredientLogs, symptomLogs, dotByIngredient)
 
         return HomeState(
             selectedDate = date,
@@ -136,7 +146,7 @@ class HomeViewModel(
     }
 
     private fun buildRibbon(
-        today: LocalDate,
+        windowEnd: LocalDate,
         ingredientLogs: List<IngredientLogEntry>,
         symptomLogs: List<SymptomLogEntry>,
         dotByIngredient: Map<Ingredient, DotColor>,
@@ -145,7 +155,7 @@ class HomeViewModel(
         val symptomsByDate = symptomLogs.groupBy { it.date }
         val window = (RIBBON_WINDOW_DAYS - 1) downTo 0
         return window.map { offset ->
-            val day = today.minus(offset, DateTimeUnit.DAY)
+            val day = windowEnd.minus(offset, DateTimeUnit.DAY)
             val bands = ingredientsByDate[day]
                 ?.mapNotNull { dotByIngredient[it.ingredient] }
                 ?.toSet()
@@ -179,8 +189,12 @@ class HomeViewModel(
     private fun today(): LocalDate = Clock.System.todayIn(TimeZone.currentSystemDefault())
 
     companion object {
-        // Calendar ribbon width (days). Today included, so the leftmost
-        // column is `today - (RIBBON_WINDOW_DAYS - 1)`.
+        // Calendar ribbon width (days). The selected day always sits
+        // `RIBBON_FORWARD_BUFFER` columns from the right edge so a few
+        // "newer" days remain visible for context. The right edge is
+        // capped at today, so when the selection is recent the window
+        // stays anchored at today.
         const val RIBBON_WINDOW_DAYS = 14
+        const val RIBBON_FORWARD_BUFFER = 3
     }
 }

@@ -17,17 +17,42 @@ struct CalendarRibbon: View {
     let onSelect: (LocalDate) -> Void
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 0) {
-                ForEach(days, id: \.date) { day in
-                    RibbonColumn(
-                        day: day,
-                        isSelected: day.date == selectedDate,
-                        onTap: { onSelect(day.date) }
-                    )
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 0) {
+                    ForEach(days, id: \.date) { day in
+                        RibbonColumn(
+                            day: day,
+                            isSelected: day.date == selectedDate,
+                            onTap: { onSelect(day.date) }
+                        )
+                        .id(day.date)
+                    }
                 }
+                .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
             }
-            .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
+            // Window slides with selection (VM-side), so the rightmost column
+            // changes when the user navigates beyond the current window. Pin
+            // the new rightmost edge to trailing so the ribbon stays in sync
+            // with the data.
+            .onAppear { scrollToWindowEdge(proxy: proxy, animated: false) }
+            .onChange(of: days.last?.date) { _, _ in
+                scrollToWindowEdge(proxy: proxy, animated: true)
+            }
+            // Baseline + day-number transitions glide between columns when the
+            // selection moves within the visible window.
+            .animation(Animation(AppMotion.shared.Standard), value: selectedDate)
+        }
+    }
+
+    private func scrollToWindowEdge(proxy: ScrollViewProxy, animated: Bool) {
+        guard let last = days.last?.date else { return }
+        if animated {
+            withAnimation(Animation(AppMotion.shared.Standard)) {
+                proxy.scrollTo(last, anchor: .trailing)
+            }
+        } else {
+            proxy.scrollTo(last, anchor: .trailing)
         }
     }
 }

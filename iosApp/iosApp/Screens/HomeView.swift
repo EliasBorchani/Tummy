@@ -287,16 +287,18 @@ private struct DayList: View {
 private struct IngredientRow: View {
     let entry: IngredientWithDot
 
-    @Environment(\.theme) private var theme
-
     var body: some View {
-        HStack(spacing: CGFloat(AppDimens.shared.SpaceM)) {
+        LedgerRow(label: entry.displayName, meta: occurrenceLabel) {
             SuspectDot(color: entry.dot, size: CGFloat(AppDimens.shared.SpaceL))
-            Text(entry.displayName)
-                .appTextStyle(AppTypography.shared.BodyL)
-                .foregroundStyle(Color(theme.ink))
-            Spacer()
         }
+    }
+
+    private var occurrenceLabel: String {
+        let count = Int(entry.occurrenceCount)
+        if count == 1 {
+            return MR.strings.shared.ingredient_occurrences_one.localized()
+        }
+        return MR.strings.shared.ingredient_occurrences_other.localized(count)
     }
 }
 

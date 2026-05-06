@@ -17,6 +17,7 @@ data class IngredientWithDot(
     val displayName: String,
     val dot: DotColor,
     val perSymptomScore: Map<Symptom, Double>?,
+    val occurrenceCount: Int,
 )
 
 /**
