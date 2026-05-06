@@ -37,6 +37,7 @@
     <string name="home_add_question">What did you want to log?</string>
     <string name="home_add_ingredient">Add ingredient</string>
     <string name="home_add_symptom">Add symptom</string>
+    <string name="home_add_symptom_chip">Symptom</string>
 
     <string name="log_ingredient_title">Add ingredient</string>
     <string name="log_ingredient_search_hint">Search or type a custom ingredient</string>

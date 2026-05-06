@@ -95,6 +95,9 @@ struct HomeView: View {
                             },
                             onDeleteSymptom: { symptom in
                                 obs.vm.onIntent(intent: HomeIntentDeleteSymptom(symptom: symptom))
+                            },
+                            onAddSymptom: {
+                                obs.vm.onIntent(intent: HomeIntentAddSymptom())
                             }
                         )
                     }
@@ -215,6 +218,7 @@ private struct DayList: View {
     let state: HomeState
     let onDeleteIngredient: (IngredientWithDot) -> Void
     let onDeleteSymptom: (Symptom) -> Void
+    let onAddSymptom: () -> Void
 
     @Environment(\.theme) private var theme
 
@@ -236,20 +240,38 @@ private struct DayList: View {
                 }
             }
 
-            if !state.symptoms.isEmpty {
-                Section {
+            // Symptoms always render — the cluster includes the "+" add chip
+            // so users can log a symptom even on a day with none yet.
+            Section {
+                WrapLayout(
+                    hSpacing: CGFloat(AppDimens.shared.SpaceS),
+                    vSpacing: CGFloat(AppDimens.shared.SpaceS)
+                ) {
                     ForEach(Array(state.symptoms), id: \.self) { symptom in
-                        SymptomRow(symptom: symptom)
-                            .listRowBackground(Color(theme.surface))
-                            .swipeActions {
-                                Button(role: .destructive) { onDeleteSymptom(symptom) } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
-                            }
+                        Chip(
+                            label: symptom.localizedName,
+                            indicator: Color(theme.signalHigh),
+                            onTap: { onDeleteSymptom(symptom) }
+                        )
                     }
-                } header: {
-                    Eyebrow(text: MR.strings.shared.home_section_symptoms.localized())
+                    Chip(
+                        label: MR.strings.shared.home_add_symptom_chip.localized(),
+                        style: .dashed,
+                        leadingSystemImage: "plus",
+                        onTap: onAddSymptom
+                    )
                 }
+                .padding(.vertical, CGFloat(AppDimens.shared.SpaceS))
+                .listRowInsets(EdgeInsets(
+                    top: 0,
+                    leading: CGFloat(AppDimens.shared.SpaceM),
+                    bottom: 0,
+                    trailing: CGFloat(AppDimens.shared.SpaceM)
+                ))
+                .listRowBackground(Color.clear)
+                .listRowSeparator(.hidden)
+            } header: {
+                Eyebrow(text: MR.strings.shared.home_section_symptoms.localized())
             }
         }
         .listStyle(.insetGrouped)
@@ -268,18 +290,6 @@ private struct IngredientRow: View {
 
     private var occurrenceLabel: String {
         MR.plurals.shared.ingredient_occurrences.localized(Int(entry.occurrenceCount))
-    }
-}
-
-private struct SymptomRow: View {
-    let symptom: Symptom
-
-    @Environment(\.theme) private var theme
-
-    var body: some View {
-        Text(symptom.localizedName)
-            .appTextStyle(AppTypography.shared.BodyL)
-            .foregroundStyle(Color(theme.ink))
     }
 }
 
