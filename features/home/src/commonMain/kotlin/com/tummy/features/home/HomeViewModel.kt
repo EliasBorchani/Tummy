@@ -47,7 +47,10 @@ class HomeViewModel(
     override fun onIntent(intent: HomeIntent) {
         when (intent) {
             HomeIntent.PreviousDay -> selectedDate.update { it.minus(1, DateTimeUnit.DAY) }
-            HomeIntent.NextDay -> selectedDate.update { it.plus(1, DateTimeUnit.DAY) }
+            HomeIntent.NextDay -> selectedDate.update {
+                val next = it.plus(1, DateTimeUnit.DAY)
+                if (next > today()) it else next
+            }
             is HomeIntent.SelectDate -> selectedDate.value = intent.date
             HomeIntent.AddIngredient ->
                 emitEvent(HomeEvent.NavigateToLogIngredient(selectedDate.value))

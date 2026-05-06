@@ -79,21 +79,30 @@ struct HomeView: View {
                     .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
                 }
 
-                if isEmpty {
-                    EmptyDayCard()
-                        .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
-                    Spacer()
-                } else {
-                    DayList(
-                        state: obs.state,
-                        onDeleteIngredient: { entry in
-                            obs.vm.onIntent(intent: HomeIntentDeleteIngredient(ingredient: entry.ingredient))
-                        },
-                        onDeleteSymptom: { symptom in
-                            obs.vm.onIntent(intent: HomeIntentDeleteSymptom(symptom: symptom))
+                Group {
+                    if isEmpty {
+                        VStack(spacing: 0) {
+                            EmptyDayCard()
+                                .padding(.horizontal, CGFloat(AppDimens.shared.SpaceM))
+                            Spacer()
                         }
-                    )
+                    } else {
+                        DayList(
+                            state: obs.state,
+                            onDeleteIngredient: { entry in
+                                obs.vm.onIntent(intent: HomeIntentDeleteIngredient(ingredient: entry.ingredient))
+                            },
+                            onDeleteSymptom: { symptom in
+                                obs.vm.onIntent(intent: HomeIntentDeleteSymptom(symptom: symptom))
+                            }
+                        )
+                    }
                 }
+                .paginatedSwipe(
+                    onPrevious: { obs.vm.onIntent(intent: HomeIntentPreviousDay()) },
+                    onNext: { obs.vm.onIntent(intent: HomeIntentNextDay()) }
+                )
+                .animation(Animation(AppMotion.shared.Swipe), value: obs.state.selectedDate)
             }
 
             VStack {
