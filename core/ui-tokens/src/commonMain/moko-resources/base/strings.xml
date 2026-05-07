@@ -50,6 +50,13 @@
     <string name="log_ingredient_title">Add ingredient</string>
     <string name="log_ingredient_search_hint">Search or type a custom ingredient</string>
     <string name="log_ingredient_save_as_new">Add "%s"</string>
+    <string name="log_ingredient_save_as_custom_hint">as a custom ingredient</string>
+    <string name="log_ingredient_did_you_mean">Did you mean</string>
+    <string name="log_ingredient_use">Use</string>
+    <string name="log_ingredient_curated_section">Curated</string>
+    <string name="log_ingredient_custom_section">Your custom</string>
+    <string name="log_ingredient_curated_kind">curated</string>
+    <string name="log_ingredient_custom_kind">custom</string>
 
     <string name="log_symptom_title">Symptoms</string>
     <string name="log_symptom_done">Done</string>

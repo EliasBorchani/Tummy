@@ -14,5 +14,5 @@ val ingredientsModule = module {
     single<IngredientRepository> { IngredientRepositoryImpl(get()) }
 
     factory { SearchIngredientsUseCase(get(), get()) }
-    factory { UpsertIngredientLogUseCase(get(), get()) }
+    factory { UpsertIngredientLogUseCase(get()) }
 }

@@ -4,4 +4,8 @@
         <item quantity="one">1 occurrence</item>
         <item quantity="other">%d occurrences</item>
     </plurals>
+    <plurals name="ingredient_search_results">
+        <item quantity="one">1 result</item>
+        <item quantity="other">%d results</item>
+    </plurals>
 </resources>

@@ -1,10 +1,12 @@
 import SwiftUI
 import TummyShared
 
-/// Single text field with eyebrow label, optional helper / error text, focus
-/// ring and disabled mode. HeightControlMd × RadiusM, hairline stroke.
+/// Single text field with optional eyebrow label, optional helper / error
+/// text, focus ring and disabled mode. HeightControlMd × RadiusM, hairline
+/// stroke. Pass `label: nil` when the surrounding screen already provides
+/// the field's context.
 struct AppTextField: View {
-    let label: String
+    var label: String? = nil
     @Binding var text: String
     var placeholder: String = ""
     var error: String? = nil
@@ -15,7 +17,9 @@ struct AppTextField: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: CGFloat(AppDimens.shared.SpaceXS)) {
-            Eyebrow(text: label)
+            if let label {
+                Eyebrow(text: label)
+            }
 
             TextField(placeholder, text: $text)
                 .focused($focused)
@@ -52,19 +56,25 @@ struct AppTextField: View {
     }
 }
 
-/// Search field with leading magnifier and an optional trailing results count.
+/// Search field with leading magnifier and an optional trailing results
+/// count. Eyebrow label is optional — pass `nil` when context is set by
+/// the surrounding screen (e.g. a nav-bar title that names the search).
 struct AppSearchField: View {
-    let label: String
+    var label: String? = nil
     @Binding var text: String
     var placeholder: String = ""
-    var resultsCount: Int? = nil
+    /// Pre-formatted trailing readout, e.g. "3 results". The DS doesn't
+    /// localize on the caller's behalf — pass the result of a plural lookup.
+    var resultsLabel: String? = nil
 
     @FocusState private var focused: Bool
     @Environment(\.theme) private var theme
 
     var body: some View {
         VStack(alignment: .leading, spacing: CGFloat(AppDimens.shared.SpaceXS)) {
-            Eyebrow(text: label)
+            if let label {
+                Eyebrow(text: label)
+            }
 
             HStack(spacing: CGFloat(AppDimens.shared.SpaceS)) {
                 Image(systemName: "magnifyingglass")
@@ -76,8 +86,8 @@ struct AppSearchField: View {
                     .appTextStyle(AppTypography.shared.BodyL)
                     .foregroundStyle(Color(theme.ink))
 
-                if let n = resultsCount {
-                    Text("\(n)")
+                if let resultsLabel {
+                    Text(resultsLabel)
                         .monospacedDigit()
                         .appTextStyle(AppTypography.shared.Mono)
                         .foregroundStyle(Color(theme.inkFaint))
