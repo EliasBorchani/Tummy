@@ -5,7 +5,7 @@ import TummyShared
 // Sheet content height isn't a dimension on the spacing/sizing scale —
 // it's screen-specific composition. Single recipe value, kept here so it's
 // reviewable.
-private let addSheetDetentHeight: CGFloat = 300
+private let addSheetDetentHeight: CGFloat = 340
 
 @MainActor
 final class HomeObservable: ObservableObject {
@@ -136,6 +136,7 @@ struct HomeView: View {
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $showAddSheet) {
             AddChooserSheet(
+                date: obs.state.selectedDate,
                 onAddIngredient: {
                     showAddSheet = false
                     obs.vm.onIntent(intent: HomeIntentAddIngredient())
@@ -296,6 +297,7 @@ private struct IngredientRow: View {
 // MARK: - Add chooser sheet
 
 private struct AddChooserSheet: View {
+    let date: LocalDate
     let onAddIngredient: () -> Void
     let onAddSymptom: () -> Void
     let onCancel: () -> Void
@@ -305,44 +307,62 @@ private struct AddChooserSheet: View {
     var body: some View {
         SheetSurface {
             VStack(alignment: .leading, spacing: CGFloat(AppDimens.shared.SpaceL)) {
-                VStack(alignment: .leading, spacing: CGFloat(AppDimens.shared.SpaceXS)) {
-                    Eyebrow(text: MR.strings.shared.home_add_eyebrow.localized())
-                    Text(MR.strings.shared.home_add_question.localized())
-                        .appTextStyle(AppTypography.shared.HeadingM)
-                        .foregroundStyle(Color(theme.ink))
-                }
-
-                VStack(spacing: CGFloat(AppDimens.shared.SpaceS)) {
-                    AppButton(
-                        title: MR.strings.shared.home_add_ingredient.localized(),
-                        kind: .primary,
-                        size: .lg,
-                        leadingSystemImage: "leaf",
-                        action: onAddIngredient
-                    )
-                    .frame(maxWidth: .infinity)
-
-                    AppButton(
-                        title: MR.strings.shared.home_add_symptom.localized(),
-                        kind: .secondary,
-                        size: .lg,
-                        leadingSystemImage: "waveform.path",
-                        action: onAddSymptom
-                    )
-                    .frame(maxWidth: .infinity)
-                }
-
-                AppButton(
-                    title: MR.strings.shared.common_cancel.localized(),
-                    kind: .tertiary,
-                    size: .md,
-                    action: onCancel
-                )
-                .frame(maxWidth: .infinity)
+                header
+                question
+                options
             }
             .padding(.horizontal, CGFloat(AppDimens.shared.SpaceL))
             .padding(.top, CGFloat(AppDimens.shared.SpaceM))
             .padding(.bottom, CGFloat(AppDimens.shared.SpaceXL))
         }
     }
+
+    private var header: some View {
+        HStack(alignment: .firstTextBaseline) {
+            Eyebrow(text: headerEyebrow)
+            Spacer()
+            Button(action: onCancel) {
+                Text(MR.strings.shared.common_cancel.localized())
+                    .appTextStyle(AppTypography.shared.BodyM)
+                    .foregroundStyle(Color(theme.inkFaint))
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
+    private var question: some View {
+        Text(MR.strings.shared.home_add_question.localized())
+            .appTextStyle(AppTypography.shared.HeadingM)
+            .foregroundStyle(Color(theme.ink))
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private var options: some View {
+        VStack(spacing: CGFloat(AppDimens.shared.SpaceS)) {
+            ChooserOption(
+                title: MR.strings.shared.home_add_ingredient_short.localized(),
+                hint: MR.strings.shared.home_add_ingredient_hint.localized(),
+                badge: MR.strings.shared.home_add_most_days_badge.localized(),
+                onTap: onAddIngredient
+            ) {
+                IngredientGlyph()
+            }
+
+            ChooserOption(
+                title: MR.strings.shared.home_add_symptom_short.localized(),
+                hint: MR.strings.shared.home_add_symptom_hint.localized(),
+                onTap: onAddSymptom
+            ) {
+                SymptomGlyph()
+            }
+        }
+    }
+
+    private var headerEyebrow: String {
+        let label = MR.strings.shared.home_add_eyebrow.localized()
+        let f = DateFormatter()
+        f.dateFormat = "MMM d"
+        return "\(label) · \(f.string(from: date.toSwiftDate()))"
+    }
 }
+
